@@ -61,10 +61,17 @@
     <Analyzer Include="packages\StyleCop.Analyzers.1.0.0-beta013\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Grid.cs" />
-    <Compile Include="GridCell.cs" />
-    <Compile Include="GridCellTest.cs" />
-    <Compile Include="GridTest.cs" />
+    <Compile Include="CartesianGrid.cs" />
+    <Compile Include="CartesianGridCell.cs" />
+    <Compile Include="CartesianGridCellLogic.cs" />
+    <Compile Include="CartesianGridCellLogicTest.cs" />
+    <Compile Include="CartesianGridLogic.cs" />
+    <Compile Include="CartesianGridLogicTest.cs" />
+    <Compile Include="CartesianGridTest.cs" />
+    <Compile Include="IGrid.cs" />
+    <Compile Include="IGridCell.cs" />
+    <Compile Include="IGridCellLogic.cs" />
+    <Compile Include="IGridLogic.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>
   <ItemGroup>

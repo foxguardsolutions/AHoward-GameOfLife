@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 namespace GameOfLife
 {
@@ -6,16 +7,18 @@ namespace GameOfLife
     {
         public static void Main(string[] args)
         {
-            Grid grid = new Grid(args[0]);
+            string[] lines = File.ReadAllLines(args[0]);
+
+            CartesianGrid cartesianGrid = new CartesianGrid(lines);
 
             Console.WriteLine("Starting grid, press \"Y\" to view next generation");
-            Console.WriteLine(grid.ToString());
+            Console.WriteLine(cartesianGrid.ToString());
 
             while (Console.ReadLine() == "y")
             {
-                grid.NextGeneration();
+                cartesianGrid.NextGeneration();
 
-                Console.WriteLine(grid.ToString());
+                Console.WriteLine(cartesianGrid.ToString());
                 Console.WriteLine("Press \"Y\" to view next generation");
             }
         }
