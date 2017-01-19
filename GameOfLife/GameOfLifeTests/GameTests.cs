@@ -9,7 +9,9 @@ namespace GameOfLifeTests
         [Test]
         public void NewGame_CreatesGame()
         {
-            new Game();
+            var game = new Game();
+
+            Assert.That(game, Is.TypeOf(typeof(Game)));
         }
     }
 }
