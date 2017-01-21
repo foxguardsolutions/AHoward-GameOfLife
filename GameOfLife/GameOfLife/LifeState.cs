@@ -2,7 +2,7 @@
 {
     public enum LifeState
     {
-        Alive,
-        Dead
+        Dead,
+        Alive
     }
 }

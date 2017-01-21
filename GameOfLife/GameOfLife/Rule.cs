@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
+using static GameOfLife.LifeState;
 
 namespace GameOfLife
 {
@@ -8,14 +10,17 @@ namespace GameOfLife
 
         internal Rule(uint[] numbersYieldingLife)
         {
-            _numbersYieldingLife = numbersYieldingLife.Distinct().ToArray();
+            _numbersYieldingLife = numbersYieldingLife;
         }
 
-        public LifeState Apply(uint number)
+        public LifeState Apply(IEnumerable<Cell> neighboringCells)
         {
-            if (_numbersYieldingLife.Contains(number))
-                return LifeState.Alive;
-            return LifeState.Dead;
+            var liveCellCount = (uint)neighboringCells
+                .Where(cell => cell.CurrentState == Alive)
+                .Count();
+            if (_numbersYieldingLife.Contains(liveCellCount))
+                return Alive;
+            return Dead;
         }
     }
 }

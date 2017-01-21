@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using GameOfLife;
 using Moq;
 using NUnit.Framework;
@@ -21,11 +23,6 @@ namespace GameOfLifeTests
         }
 
         [Test]
-        public void NewRuleset_CreatesRuleset()
-        {
-        }
-
-        [Test]
         public void IsComplete_WithoutRulesEstablishedForAllStates_ReturnsFalse()
         {
             var completeStatus = _ruleset.IsComplete();
@@ -37,7 +34,7 @@ namespace GameOfLifeTests
         public void IsComplete_WithRulesEstablishedForAllStates_ReturnsTrue()
         {
             foreach (LifeState state in Enum.GetValues(typeof(LifeState)))
-                _ruleset.Set(state, _rule);
+                _ruleset[state] = _rule;
 
             var completeStatus = _ruleset.IsComplete();
 
@@ -45,18 +42,30 @@ namespace GameOfLifeTests
         }
 
         [Test]
-        public void Apply_CallsRuleApplyMethod()
+        public void SetNextState_SetsCellStateToResultOfRuleApplication()
         {
-            var number = Fixture.Create<uint>();
-            var expectedFinalState = Fixture.Create<LifeState>();
-            _mockRule.Setup(r => r.Apply(number)).Returns(expectedFinalState);
-
             var initialState = Fixture.Create<LifeState>();
-            _ruleset.Set(initialState, _rule);
+            var cell = new Cell(initialState);
+            var neighbors = Fixture.CreateMany<Cell>().ToArray();
+            var expectedFinalState = Fixture.CreateUnequalToDefault<LifeState>();
+            SetUpMockRule(neighbors, expectedFinalState, initialState);
 
-            var actualFinalState = _ruleset.Apply(initialState, number);
+            _ruleset.SetNextState(cell, neighbors);
+            var actualFinalState = GetNextState(cell);
 
             Assert.That(actualFinalState, Is.EqualTo(expectedFinalState));
+        }
+
+        private void SetUpMockRule(IEnumerable<Cell> cells, LifeState expectedFinalState, LifeState initialState)
+        {
+            _mockRule.Setup(r => r.Apply(cells)).Returns(expectedFinalState);
+            _ruleset[initialState] = _rule;
+        }
+
+        private LifeState GetNextState(Cell cell)
+        {
+            cell.AdvanceState();
+            return cell.CurrentState;
         }
     }
 }

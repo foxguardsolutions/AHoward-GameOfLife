@@ -1,7 +1,9 @@
-﻿namespace GameOfLife
+﻿using System.Collections.Generic;
+
+namespace GameOfLife
 {
     public interface IRule
     {
-        LifeState Apply(uint number);
+        LifeState Apply(IEnumerable<Cell> neighboringCells);
     }
 }

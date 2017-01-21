@@ -10,9 +10,9 @@ namespace GameOfLifeTests
         [Test]
         public void Create_ReturnsNewRule()
         {
-            var liveNeighborCount = Fixture.CreateMany<uint>().ToArray();
             var ruleFactory = new RuleFactory();
-            var rule = ruleFactory.Create(liveNeighborCount);
+            var numbers = Fixture.CreateMany<uint>().ToArray();
+            var rule = ruleFactory.Create(numbers);
             Assert.That(rule, Is.TypeOf(typeof(Rule)));
         }
     }

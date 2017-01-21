@@ -44,6 +44,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cell.cs" />
+    <Compile Include="EnumExtension.cs" />
+    <Compile Include="Grid.cs" />
+    <Compile Include="GridFactory.cs" />
+    <Compile Include="IGame.cs" />
     <Compile Include="IRule.cs" />
     <Compile Include="Ruleset.cs" />
     <Compile Include="LifeState.cs" />

@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
+using static GameOfLife.EnumExtension;
 
 namespace GameOfLife
 {
@@ -13,25 +12,20 @@ namespace GameOfLife
             _rules = new Dictionary<LifeState, IRule>();
         }
 
-        public void Set(LifeState state, IRule newRule)
+        public IRule this[LifeState state]
         {
-            _rules[state] = newRule;
+            set { _rules[state] = value; }
         }
 
-        public LifeState Apply(LifeState state, uint number)
+        public void SetNextState(Cell cell, IEnumerable<Cell> neighbors)
         {
-            return _rules[state].Apply(number);
+            var applicableRule = _rules[cell.CurrentState];
+            cell.NextState = applicableRule.Apply(neighbors);
         }
 
         public bool IsComplete()
         {
             return ForEvery<LifeState>(_rules.ContainsKey);
-        }
-
-        private static bool ForEvery<EnumType>(Func<EnumType, bool> predicate)
-        {
-            var enumValues = (IEnumerable<EnumType>)Enum.GetValues(typeof(EnumType));
-            return enumValues.All(predicate);
         }
     }
 }
