@@ -1,18 +1,30 @@
-﻿using System;
-using static System.Math;
-
-namespace GameOfLife
+﻿namespace GameOfLife
 {
     public class GridFactory
     {
-        public Grid Create(LifeState[,] seed, params bool[] inputWrappingRules)
+        public SquareTileGrid CreateSquareTileGrid(LifeState[,] seed)
         {
-            var dimensions = 2;
-            var gridWrappingRules = new bool[dimensions];
+            return CreateSquareTileGrid(seed, false, false);
+        }
 
-            Array.Copy(inputWrappingRules, gridWrappingRules, Min(dimensions, inputWrappingRules.Length));
+        public SquareTileGrid CreateSquareTileGrid(LifeState[,] seed, bool wrapsOnRows, bool wrapsOnColumns)
+        {
+            var cells = InitializeCells(seed);
+            return new SquareTileGrid(cells, wrapsOnRows, wrapsOnColumns);
+        }
 
-            return new Grid(seed, gridWrappingRules);
+        private Cell[,] InitializeCells(LifeState[,] seed)
+        {
+            var cells = new Cell[seed.GetLength(0), seed.GetLength(1)];
+            for (uint rowNumber = 0; rowNumber < seed.GetLength(0); rowNumber++)
+            {
+                for (uint columnNumber = 0; columnNumber < seed.GetLength(1); columnNumber++)
+                {
+                    cells[rowNumber, columnNumber] = new Cell(seed[rowNumber, columnNumber]);
+                }
+            }
+
+            return cells;
         }
     }
 }
