@@ -72,6 +72,7 @@
   <ItemGroup>
     <Compile Include="BaseTests.cs" />
     <Compile Include="CellTests.cs" />
+    <Compile Include="DimensionTests.cs" />
     <Compile Include="EnumExtensionTests.cs" />
     <Compile Include="FixtureExtension.cs" />
     <Compile Include="GameTests.cs" />
