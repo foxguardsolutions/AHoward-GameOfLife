@@ -8,11 +8,20 @@ namespace GameOfLife
         private Dimension _rowDimension;
         private Dimension _columnDimension;
 
-        internal SquareTileGrid(Cell[,] cells, bool wrapsOnRows, bool wrapsOnColumns)
+        public SquareTileGrid(Cell[,] cells, bool wrapsOnRows, bool wrapsOnColumns)
         {
             _cells = cells;
             _rowDimension = new Dimension((uint)cells.GetLength(0), wrapsOnRows);
             _columnDimension = new Dimension((uint)cells.GetLength(1), wrapsOnColumns);
+        }
+
+        public LifeState[,] GetCurrentPattern()
+        {
+            var pattern = new LifeState[_cells.GetLength(0), _cells.GetLength(1)];
+            foreach (var position in this)
+                pattern[position.DimensionOne, position.DimensionTwo] = GetCellAt(position).CurrentState;
+
+            return pattern; // Maybe make this IEnumerable<LifeState>, if it is possible to store the grid structure in the Game
         }
 
         public Cell GetCellAt(CellPosition cellPosition)

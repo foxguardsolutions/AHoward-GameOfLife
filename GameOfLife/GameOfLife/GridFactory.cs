@@ -1,6 +1,6 @@
 ﻿namespace GameOfLife
 {
-    public class GridFactory
+    public class GridFactory : IGridFactory
     {
         public SquareTileGrid CreateSquareTileGrid(LifeState[,] seed)
         {

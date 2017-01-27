@@ -2,7 +2,7 @@
 
 namespace GameOfLife
 {
-    public class RuleFactory
+    public class RuleFactory : IRuleFactory
     {
         public IRule Create(params uint[] neighborCountsYieldingLive)
         {

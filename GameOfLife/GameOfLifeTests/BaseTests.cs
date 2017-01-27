@@ -1,5 +1,4 @@
-﻿using GameOfLife;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using Ploeh.AutoFixture;
 
 namespace GameOfLifeTests
@@ -13,11 +12,6 @@ namespace GameOfLifeTests
         public void FixtureSetUp()
         {
             Fixture = new Fixture();
-            Fixture.Register(() =>
-            {
-                var ruleFactory = new RuleFactory();
-                return ruleFactory.Create();
-            });
         }
     }
 }

@@ -75,8 +75,12 @@
     <Compile Include="CellTests.cs" />
     <Compile Include="DimensionTests.cs" />
     <Compile Include="EnumExtensionTests.cs" />
+    <Compile Include="GameCallsMethodOfDependencyClassesTests.cs" />
+    <Compile Include="GameExecutesStepTests.cs" />
+    <Compile Include="GameGridPatternTests.cs" />
     <Compile Include="GameTests.cs" />
     <Compile Include="GridFactoryTests.cs" />
+    <Compile Include="MockGrid.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RuleFactoryTests.cs" />
     <Compile Include="RulesetTests.cs" />

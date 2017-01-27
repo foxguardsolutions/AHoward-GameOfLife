@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using GameOfLife;
+using Moq;
 using NUnit.Framework;
 using Ploeh.AutoFixture;
 
@@ -9,16 +10,24 @@ namespace GameOfLifeTests
     public class RuleTests : BaseTests
     {
         private uint[] _numbersYieldingLive;
-        private RuleFactory _ruleFactory;
+        private IRuleFactory _ruleFactory;
         private Cell[] _cells;
 
         [SetUp]
         public void SetUp()
         {
             _numbersYieldingLive = Fixture.CreateMany<uint>().ToArray();
-            _ruleFactory = Fixture.Create<RuleFactory>();
+            _ruleFactory = SetUpMockIRuleFactory();
             _cells = MakeSomeLivingAndDeadCells(
                 _numbersYieldingLive[0], Fixture.Create<uint>());
+        }
+
+        private IRuleFactory SetUpMockIRuleFactory()
+        {
+            var ruleFactoryMock = new Mock<IRuleFactory>();
+            ruleFactoryMock.Setup(r => r.Create()).Returns(new Rule(new uint[0]));
+            ruleFactoryMock.Setup(r => r.Create(_numbersYieldingLive)).Returns(new Rule(_numbersYieldingLive));
+            return ruleFactoryMock.Object;
         }
 
         private Cell[] MakeSomeLivingAndDeadCells(uint numberOfLiving, uint numberOfDead)

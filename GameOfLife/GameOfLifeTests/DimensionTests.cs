@@ -40,7 +40,8 @@ namespace GameOfLifeTests
         [Test]
         public void GetNeighborValues_GivenValueGreaterThanMinAndLessThanMax_ReturnsValueAndValuesOnEitherSide()
         {
-            var dimension = new Dimension(_size, _wraps);
+            var sizeWithAtLeastOneValueBetweenMinAndMax = 1 + _size + 1;
+            var dimension = new Dimension(sizeWithAtLeastOneValueBetweenMinAndMax, _wraps);
             var internalValue = Fixture.CreateInRange<uint>((int)dimension.Min + 1, (int)dimension.Max - 1);
 
             var expectedNeighbors = new uint[] { internalValue - 1, internalValue, internalValue + 1 };

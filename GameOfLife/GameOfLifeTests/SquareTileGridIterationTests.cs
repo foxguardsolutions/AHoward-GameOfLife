@@ -32,5 +32,15 @@ namespace GameOfLifeTests
                     yield return new CellPosition(i, j);
             }
         }
+
+        [Test]
+        public void GetCurrentPattern_WithoutAnyCellChanges_ReturnsPatternMatchingSeedPattern()
+        {
+            var seed = Fixture.Create<LifeState[,]>();
+            var grid = GridFactory.CreateSquareTileGrid(seed);
+            var pattern = grid.GetCurrentPattern();
+
+            Assert.That(pattern, Is.EqualTo(seed));
+        }
     }
 }

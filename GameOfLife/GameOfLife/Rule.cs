@@ -8,7 +8,7 @@ namespace GameOfLife
     {
         private uint[] _numbersYieldingLife;
 
-        internal Rule(uint[] numbersYieldingLife)
+        public Rule(uint[] numbersYieldingLife)
         {
             _numbersYieldingLife = numbersYieldingLife;
         }

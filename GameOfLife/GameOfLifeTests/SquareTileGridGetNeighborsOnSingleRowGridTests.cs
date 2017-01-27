@@ -13,13 +13,14 @@ namespace GameOfLifeTests
         [SetUp]
         public void SetUp()
         {
-            var gridWidth = Fixture.Create<int>();
-            SetUpSeed(gridWidth);
+            var gridWidthNotIncludingEndCells = Fixture.Create<int>();
+            var totalGridWidth = 1 + gridWidthNotIncludingEndCells + 1;
+            SetUpSeed(totalGridWidth);
 
-            var columnAtOneEndOfRow = Fixture.PickFromValues<uint>(0, (uint)gridWidth - 1);
+            var columnAtOneEndOfRow = Fixture.PickFromValues<uint>(0, (uint)totalGridWidth - 1);
             _positionAtOneEndOfRow = new CellPosition(0, columnAtOneEndOfRow);
 
-            var columnInMiddleOfRow = Fixture.CreateInRange<uint>(1, gridWidth - 2);
+            var columnInMiddleOfRow = Fixture.CreateInRange<uint>(1, totalGridWidth - 2);
             _positionInMiddleOfRow = new CellPosition(0, columnInMiddleOfRow);
         }
 

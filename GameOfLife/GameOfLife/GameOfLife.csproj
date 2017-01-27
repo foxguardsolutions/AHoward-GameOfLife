@@ -46,8 +46,14 @@
   <ItemGroup>
     <Compile Include="Cell.cs" />
     <Compile Include="CellPosition.cs" />
+    <Compile Include="ConsoleWriter.cs" />
+    <Compile Include="DefaultSettings.cs" />
     <Compile Include="Dimension.cs" />
     <Compile Include="EnumExtension.cs" />
+    <Compile Include="IConsoleWriter.cs" />
+    <Compile Include="IGridFactory.cs" />
+    <Compile Include="IRuleFactory.cs" />
+    <Compile Include="IRuleset.cs" />
     <Compile Include="SquareTileGrid.cs" />
     <Compile Include="GridFactory.cs" />
     <Compile Include="IGame.cs" />

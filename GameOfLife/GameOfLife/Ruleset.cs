@@ -3,7 +3,7 @@ using static GameOfLife.EnumExtension;
 
 namespace GameOfLife
 {
-    public class Ruleset
+    public class Ruleset : IRuleset
     {
         private Dictionary<LifeState, IRule> _rules;
 

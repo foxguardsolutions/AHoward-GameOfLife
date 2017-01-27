@@ -1,17 +1,90 @@
-﻿using GameOfLife;
+﻿using System.Collections.Generic;
+using GameOfLife;
+using Moq;
 using NUnit.Framework;
+using Ploeh.AutoFixture;
+using static GameOfLife.EnumExtension;
 
 namespace GameOfLifeTests
 {
     [TestFixture]
-    public class GameTests
+    public abstract class GameTests : BaseTests
     {
-        [Test]
-        public void NewGame_CreatesGame()
-        {
-            var game = new Game();
+        protected Game Game { get; private set; }
+        protected LifeState[,] Seed { get; private set; }
+        protected List<LifeState> RulesAlreadySet { get; private set; }
 
-            Assert.That(game, Is.TypeOf(typeof(Game)));
+        protected Mock<IRuleFactory> MockRuleFactory { get; private set; }
+        protected Mock<IGridFactory> MockGridFactory { get; private set; }
+        protected Mock<IConsoleWriter> MockConsoleWriter { get; private set; }
+        private Mock<IRuleset> _mockRuleset;
+
+        [SetUp]
+        public void SetUp()
+        {
+            var ruleFactory = SetUpMockIRuleFactory();
+            var gridFactory = SetUpMockIGridFactory();
+            var consoleWriter = SetUpMockIConsoleWriter();
+            var ruleset = SetUpMockIRuleset();
+
+            Game = new Game(ruleFactory, gridFactory, consoleWriter, ruleset);
+            Seed = Fixture.Create<LifeState[,]>();
+        }
+
+        private IRuleFactory SetUpMockIRuleFactory()
+        {
+            MockRuleFactory = new Mock<IRuleFactory>();
+
+            MockRuleFactory.Setup(r => r.Create(It.IsAny<uint[]>()))
+                .Returns(new Rule(new uint[0]));
+
+            return MockRuleFactory.Object;
+        }
+
+        private IGridFactory SetUpMockIGridFactory()
+        {
+            MockGridFactory = new Mock<IGridFactory>();
+
+            MockGridFactory.Setup(
+                g => g.CreateSquareTileGrid(It.IsAny<LifeState[,]>(), It.IsAny<bool>(), It.IsAny<bool>()))
+               .Returns(MockGrid.GridWithGlider);
+
+            return MockGridFactory.Object;
+        }
+
+        private IConsoleWriter SetUpMockIConsoleWriter()
+        {
+            MockConsoleWriter = new Mock<IConsoleWriter>();
+            return MockConsoleWriter.Object;
+        }
+
+        private IRuleset SetUpMockIRuleset()
+        {
+            _mockRuleset = new Mock<IRuleset>();
+
+            RulesAlreadySet = new List<LifeState>();
+            SetUpMockIRulesetSetter(_mockRuleset, LifeState.Dead);
+            SetUpMockIRulesetSetter(_mockRuleset, LifeState.Alive);
+            _mockRuleset.Setup(r => r.IsComplete()).Returns(() => ForEvery<LifeState>(RulesAlreadySet.Contains));
+            _mockRuleset.Setup(
+                r => r.SetNextState(It.IsAny<Cell>(), It.IsAny<IEnumerable<Cell>>()))
+                .Callback<Cell, IEnumerable<Cell>>(
+                    (c, n) => c.NextState = GetDefaultRuleFor(c.CurrentState).Apply(n));
+
+            return _mockRuleset.Object;
+        }
+
+        private void SetUpMockIRulesetSetter(Mock<IRuleset> mock, LifeState state)
+        {
+            mock.SetupSet(r => { r[state] = It.IsAny<IRule>(); })
+                .Callback<LifeState, IRule>((l, r) => RulesAlreadySet.Add(state));
+        }
+
+        private IRule GetDefaultRuleFor(LifeState state)
+        {
+            if (state == LifeState.Alive)
+                return new Rule(new uint[] { 2, 3 });
+            return new Rule(new uint[] { 3 });
         }
     }
 }
