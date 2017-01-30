@@ -4,9 +4,9 @@ using Ploeh.AutoFixture;
 
 namespace GameOfLifeTests
 {
-    public class SquareTileGridGetNeighborsOnSingleRowGridTests : SquareTileGridTests
+    public class SquareTileGridGetNeighborsOnSingleRowGridTests : BaseTests
     {
-        private LifeState[,] _seed;
+        private Cell[,] _cells;
         private CellPosition _positionAtOneEndOfRow;
         private CellPosition _positionInMiddleOfRow;
 
@@ -15,7 +15,7 @@ namespace GameOfLifeTests
         {
             var gridWidthNotIncludingEndCells = Fixture.Create<int>();
             var totalGridWidth = 1 + gridWidthNotIncludingEndCells + 1;
-            SetUpSeed(totalGridWidth);
+            SetUpCells(totalGridWidth);
 
             var columnAtOneEndOfRow = Fixture.PickFromValues<uint>(0, (uint)totalGridWidth - 1);
             _positionAtOneEndOfRow = new CellPosition(0, columnAtOneEndOfRow);
@@ -24,17 +24,17 @@ namespace GameOfLifeTests
             _positionInMiddleOfRow = new CellPosition(0, columnInMiddleOfRow);
         }
 
-        private void SetUpSeed(int gridWidth)
+        private void SetUpCells(int gridWidth)
         {
-            _seed = new LifeState[1, gridWidth];
+            _cells = new Cell[1, gridWidth];
             for (int i = 0; i < gridWidth; i++)
-                _seed[0, i] = Fixture.Create<LifeState>();
+                _cells[0, i] = Fixture.Create<Cell>();
         }
 
         [Test]
         public void GetNeighbors_GivenCellPositionAtEndOfSingleRowGridWithNoWrapping_YieldsOneNeighbor()
         {
-            var grid = GridFactory.CreateSquareTileGrid(_seed, false, false);
+            var grid = new SquareTileGrid(_cells, false, false);
             var cellAtEndOfRow = grid.GetCellAt(_positionAtOneEndOfRow);
             var neighborsOfCellAtEndOfRow = grid.GetNeighborsOfCellAt(_positionAtOneEndOfRow);
 
@@ -44,7 +44,7 @@ namespace GameOfLifeTests
         [Test]
         public void GetNeighbors_GivenCellPositionAtEndOfSingleRowGridThatWrapsOnlyOnTheSingleCellDimension_YieldsRowEndCellTwiceAndOneOtherNeighbor()
         {
-            var grid = GridFactory.CreateSquareTileGrid(_seed, true, false);
+            var grid = new SquareTileGrid(_cells, true, false);
             var cellAtEndOfRow = grid.GetCellAt(_positionAtOneEndOfRow);
             var neighborsOfCellAtEndOfRow = grid.GetNeighborsOfCellAt(_positionAtOneEndOfRow);
 
@@ -55,7 +55,7 @@ namespace GameOfLifeTests
         [Test]
         public void GetNeighbors_GivenCellPositionInTheMiddleOfSingleRowGridThatWrapsOnTheSingleCellDimension_YieldsMiddleCellTwiceAndTwoOtherNeighbors()
         {
-            var grid = GridFactory.CreateSquareTileGrid(_seed, true, Fixture.Create<bool>());
+            var grid = new SquareTileGrid(_cells, true, Fixture.Create<bool>());
             var cellInMiddleOfRow = grid.GetCellAt(_positionInMiddleOfRow);
             var neighborsOfCellInMiddleOfRow = grid.GetNeighborsOfCellAt(_positionInMiddleOfRow);
 

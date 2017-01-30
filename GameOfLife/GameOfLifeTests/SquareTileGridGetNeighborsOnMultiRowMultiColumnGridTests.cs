@@ -4,9 +4,9 @@ using Ploeh.AutoFixture;
 
 namespace GameOfLifeTests
 {
-    public class SquareTileGridGetNeighborsOnMultiRowMultiColumnGridTests : SquareTileGridTests
+    public class SquareTileGridGetNeighborsOnMultiRowMultiColumnGridTests : BaseTests
     {
-        private LifeState[,] _seed;
+        private Cell[,] _cells;
 
         private uint _rowOnOneEdgeOfGrid;
         private uint _columnOnOneEdgeOfGrid;
@@ -21,7 +21,7 @@ namespace GameOfLifeTests
             var gridWidthNotIncludingEdgeColumns = Fixture.Create<int>();
             var totalGridHeight = 1 + gridHeightNotIncludingEdgeRows + 1;
             var totalGridWidth = 1 + gridWidthNotIncludingEdgeColumns + 1;
-            SetUpSeed(totalGridHeight, totalGridWidth);
+            SetUpCells(totalGridHeight, totalGridWidth);
 
             _rowOnOneEdgeOfGrid = Fixture.PickFromValues<uint>(0, (uint)totalGridHeight - 1);
             _columnOnOneEdgeOfGrid = Fixture.PickFromValues<uint>(0, (uint)totalGridWidth - 1);
@@ -30,20 +30,20 @@ namespace GameOfLifeTests
             _columnNotOnEdgeOfGrid = Fixture.CreateInRange<uint>(1, totalGridWidth - 2);
         }
 
-        private void SetUpSeed(int gridHeight, int gridWidth)
+        private void SetUpCells(int gridHeight, int gridWidth)
         {
-            _seed = new LifeState[gridHeight, gridWidth];
+            _cells = new Cell[gridHeight, gridWidth];
             for (int row = 0; row < gridHeight; row++)
             {
                 for (int column = 0; column < gridWidth; column++)
-                    _seed[row, column] = Fixture.Create<LifeState>();
+                    _cells[row, column] = Fixture.Create<Cell>();
             }
         }
 
         [Test]
         public void GetNeighbors_GivenCellPositionInCornerOfGridWithNoWrapping_YieldsThreeNeighbors()
         {
-            var grid = GridFactory.CreateSquareTileGrid(_seed, false, false);
+            var grid = new SquareTileGrid(_cells, false, false);
             var cornerPosition = new CellPosition(_rowOnOneEdgeOfGrid, _columnOnOneEdgeOfGrid);
             var cornerCell = grid.GetCellAt(cornerPosition);
             var neighborsOfCornerCell = grid.GetNeighborsOfCellAt(cornerPosition);
@@ -54,7 +54,7 @@ namespace GameOfLifeTests
         [Test]
         public void GetNeighbors_GivenCellPositionOnEdgeOfGridWithNoWrappingOnThatEdge_YieldsFiveNeighbors()
         {
-            var grid = GridFactory.CreateSquareTileGrid(_seed, false, Fixture.Create<bool>());
+            var grid = new SquareTileGrid(_cells, false, Fixture.Create<bool>());
             var edgePosition = new CellPosition(_rowOnOneEdgeOfGrid, _columnNotOnEdgeOfGrid);
             var edgeCell = grid.GetCellAt(edgePosition);
             var neighborsOfEdgeCell = grid.GetNeighborsOfCellAt(edgePosition);
@@ -65,7 +65,7 @@ namespace GameOfLifeTests
         [Test]
         public void GetNeighbors_GivenCellPositionNotOnAGridEdge_YieldsEightNeighbors()
         {
-            var grid = GridFactory.CreateSquareTileGrid(_seed, Fixture.Create<bool>(), Fixture.Create<bool>());
+            var grid = new SquareTileGrid(_cells, Fixture.Create<bool>(), Fixture.Create<bool>());
             var interiorPosition = new CellPosition(_rowNotOnEdgeOfGrid, _columnNotOnEdgeOfGrid);
             var interiorCell = grid.GetCellAt(interiorPosition);
             var neighborsOfInteriorCell = grid.GetNeighborsOfCellAt(interiorPosition);

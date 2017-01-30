@@ -4,23 +4,23 @@ using Ploeh.AutoFixture;
 
 namespace GameOfLifeTests
 {
-    public class SquareTileGridGetNeighborsOfSingleCellTests : SquareTileGridTests
+    public class SquareTileGridGetNeighborsOfSingleCellTests : BaseTests
     {
-        private LifeState[,] _seed;
+        private Cell[,] _cells;
         private CellPosition _onlyPositionOnTheGrid;
 
         [SetUp]
         public void SetUp()
         {
-            _seed = new LifeState[1, 1];
-            _seed[0, 0] = Fixture.Create<LifeState>();
+            _cells = new Cell[1, 1];
+            _cells[0, 0] = Fixture.Create<Cell>();
             _onlyPositionOnTheGrid = new CellPosition(0, 0);
         }
 
         [Test]
         public void GetNeighbors_GivenSingleCellGridWithNoWrapping_YieldsNoNeighbors()
         {
-            var grid = GridFactory.CreateSquareTileGrid(_seed);
+            var grid = new SquareTileGrid(_cells, false, false);
             var neighborsOfSingleCell = grid.GetNeighborsOfCellAt(_onlyPositionOnTheGrid);
 
             Assert.That(neighborsOfSingleCell, Is.Empty);
@@ -29,7 +29,7 @@ namespace GameOfLifeTests
         [Test]
         public void GetNeighbors_GivenSingleCellGridThatWrapsOnOneDimension_YieldsSingleCellTwice()
         {
-            var grid = GridFactory.CreateSquareTileGrid(_seed, true, false);
+            var grid = new SquareTileGrid(_cells, true, false);
             var onlyCellInTheGrid = grid.GetCellAt(_onlyPositionOnTheGrid);
             var neighborsOfSingleCell = grid.GetNeighborsOfCellAt(_onlyPositionOnTheGrid);
 
@@ -40,9 +40,8 @@ namespace GameOfLifeTests
         [Test]
         public void GetNeighbors_GivenSingleCellGridThatWrapsOnBothDimension_YieldsSingleCellFourTimes()
         {
-            var grid = GridFactory.CreateSquareTileGrid(_seed, true, true);
+            var grid = new SquareTileGrid(_cells, true, true);
             var onlyCellInTheGrid = grid.GetCellAt(_onlyPositionOnTheGrid);
-            var singleGridCellFourTimes = new Cell[] { onlyCellInTheGrid, onlyCellInTheGrid, onlyCellInTheGrid, onlyCellInTheGrid };
             var neighborsOfSingleCell = grid.GetNeighborsOfCellAt(_onlyPositionOnTheGrid);
 
             Assert.That(neighborsOfSingleCell, Has.Exactly(4).Items);

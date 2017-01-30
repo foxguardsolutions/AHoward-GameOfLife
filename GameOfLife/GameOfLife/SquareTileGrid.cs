@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace GameOfLife
 {
@@ -15,13 +16,29 @@ namespace GameOfLife
             _columnDimension = new Dimension((uint)cells.GetLength(1), wrapsOnColumns);
         }
 
-        public LifeState[,] GetCurrentPattern()
+        public IEnumerable<LifeState> GetCurrentPattern()
         {
             var pattern = new LifeState[_cells.GetLength(0), _cells.GetLength(1)];
             foreach (var position in this)
                 pattern[position.DimensionOne, position.DimensionTwo] = GetCellAt(position).CurrentState;
 
-            return pattern; // Maybe make this IEnumerable<LifeState>, if it is possible to store the grid structure in the Game
+            foreach (var state in pattern)
+                yield return state;
+        }
+
+        public void WritePatternToConsole(IEnumerable<LifeState> pattern, IConsoleWriter consoleWriter)
+        {
+            var column = 0;
+            foreach (var state in pattern)
+            {
+                consoleWriter.Write(DefaultSettings.ToString(state));
+                column++;
+                if (column > _columnDimension.Max)
+                {
+                    consoleWriter.Write(Environment.NewLine);
+                    column = 0;
+                }
+            }
         }
 
         public Cell GetCellAt(CellPosition cellPosition)

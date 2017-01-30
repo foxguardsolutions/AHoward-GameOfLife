@@ -1,4 +1,5 @@
 ﻿using GameOfLife;
+using Moq;
 using NUnit.Framework;
 using Ploeh.AutoFixture;
 
@@ -25,6 +26,16 @@ namespace GameOfLifeTests
             Game.Step();
 
             MockConsoleWriter.Verify(c => c.WriteLine(expectedMessage));
+        }
+
+        [Test]
+        public void WriteCurrentPatternToConsole_WritesToConsole()
+        {
+            Game.Load(Seed);
+
+            Game.WriteCurrentPatternToConsole();
+
+            MockConsoleWriter.Verify(c => c.Write(It.IsAny<string>()));
         }
 
         [Test]

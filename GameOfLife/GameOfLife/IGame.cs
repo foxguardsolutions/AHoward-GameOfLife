@@ -1,4 +1,6 @@
-﻿namespace GameOfLife
+﻿using System.Collections.Generic;
+
+namespace GameOfLife
 {
     public interface IGame
     {
@@ -6,6 +8,7 @@
         void Load(LifeState[,] seed, bool wrapsOnRows, bool wrapsOnColumns);
         void SetRuleFor(LifeState state, params uint[] neighborCountsYieldingLive);
         void Step();
-        LifeState[,] GetCurrentPattern();
+        void WriteCurrentPatternToConsole();
+        IEnumerable<LifeState> GetCurrentPattern();
     }
 }
