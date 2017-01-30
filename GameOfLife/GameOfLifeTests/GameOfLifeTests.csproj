@@ -73,6 +73,9 @@
     <Compile Include="AutoFixtureExtension.cs" />
     <Compile Include="BaseTests.cs" />
     <Compile Include="CellTests.cs" />
+    <Compile Include="ConsoleCommandRunnerTests.cs" />
+    <Compile Include="ConsoleInterfaceTests.cs" />
+    <Compile Include="ConsoleTextCommandParserTests.cs" />
     <Compile Include="DimensionTests.cs" />
     <Compile Include="EnumExtensionTests.cs" />
     <Compile Include="GameCallsMethodOfDependencyClassesTests.cs" />
@@ -100,6 +103,10 @@
     <Analyzer Include="..\packages\StyleCop.Analyzers.1.0.0\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\GameOfLifeConsole\GameOfLifeConsole.csproj">
+      <Project>{f8c73c8b-62a5-40b3-8ac6-24af4b9eeb8d}</Project>
+      <Name>GameOfLifeConsole</Name>
+    </ProjectReference>
     <ProjectReference Include="..\GameOfLife\GameOfLife.csproj">
       <Project>{1565e1e2-a3b8-4ead-9be9-f365ec1bedd0}</Project>
       <Name>GameOfLife</Name>
