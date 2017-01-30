@@ -1,4 +1,6 @@
-﻿namespace GameOfLife
+﻿using System;
+
+namespace GameOfLife
 {
     public class GridFactory : IGridFactory
     {
@@ -17,6 +19,17 @@
         {
             var cells = InitializeCells(DefaultSettings.Seed);
             return new SquareTileGrid(cells, true, true);
+        }
+
+        public ToroidFriendlyHexTileGrid CreateHexTileGrid(LifeState[,] seed)
+        {
+            return CreateToroidFriendlyHexTileGrid(seed, false, false);
+        }
+
+        public ToroidFriendlyHexTileGrid CreateToroidFriendlyHexTileGrid(LifeState[,] seed, bool wrapsOnRows, bool wrapsOnColumns)
+        {
+            var cells = InitializeCells(seed);
+            return new ToroidFriendlyHexTileGrid(cells, wrapsOnRows, wrapsOnColumns);
         }
 
         private Cell[][] InitializeCells(LifeState[,] seed)
