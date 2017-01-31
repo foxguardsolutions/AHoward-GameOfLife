@@ -46,11 +46,11 @@
   <ItemGroup>
     <Compile Include="Cell.cs" />
     <Compile Include="CellPosition.cs" />
-    <Compile Include="ConsoleWriter.cs" />
+    <Compile Include="ConsoleReaderWriter.cs" />
     <Compile Include="DefaultSettings.cs" />
     <Compile Include="Dimension.cs" />
     <Compile Include="EnumExtension.cs" />
-    <Compile Include="IConsoleWriter.cs" />
+    <Compile Include="IConsole.cs" />
     <Compile Include="IGridFactory.cs" />
     <Compile Include="IRuleFactory.cs" />
     <Compile Include="IRuleset.cs" />

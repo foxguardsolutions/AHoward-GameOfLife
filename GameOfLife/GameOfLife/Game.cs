@@ -6,7 +6,7 @@ namespace GameOfLife
     {
         private IRuleFactory _ruleFactory;
         private IGridFactory _gridFactory;
-        private IConsoleWriter _consoleWriter;
+        private IConsole _console;
         private IRuleset _rules;
         private IGrid _grid;
         private List<IEnumerable<LifeState>> _generations;
@@ -14,11 +14,11 @@ namespace GameOfLife
         public const string GRID_NOT_LOADED = "A grid must be loaded before any steps can be taken.";
         public const string INCOMPLETE_RULES = "Cannot step until rules have been defined for all possible cell states.";
 
-        public Game(IRuleFactory ruleFactory, IGridFactory gridFactory, IConsoleWriter consoleWriter, IRuleset rules)
+        public Game(IRuleFactory ruleFactory, IGridFactory gridFactory, IConsole console, IRuleset rules)
         {
             _ruleFactory = ruleFactory;
             _gridFactory = gridFactory;
-            _consoleWriter = consoleWriter;
+            _console = console;
             _rules = rules;
             _generations = new List<IEnumerable<LifeState>>();
         }
@@ -26,7 +26,7 @@ namespace GameOfLife
         public void WriteCurrentPatternToConsole()
         {
             var currentPattern = GetCurrentPattern();
-            _grid.WritePatternToConsole(currentPattern, _consoleWriter);
+            _grid.WritePatternToConsole(currentPattern, _console);
         }
 
         public IEnumerable<LifeState> GetCurrentPattern()
@@ -65,13 +65,13 @@ namespace GameOfLife
         {
             if (_grid == null)
             {
-                _consoleWriter.WriteLine(GRID_NOT_LOADED);
+                _console.WriteLine(GRID_NOT_LOADED);
                 return false;
             }
 
             if (!_rules.IsComplete())
             {
-                _consoleWriter.WriteLine(INCOMPLETE_RULES);
+                _console.WriteLine(INCOMPLETE_RULES);
                 return false;
             }
 

@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace GameOfLife
 {
@@ -26,16 +28,16 @@ namespace GameOfLife
                 yield return state;
         }
 
-        public void WritePatternToConsole(IEnumerable<LifeState> pattern, IConsoleWriter consoleWriter)
+        public void WritePatternToConsole(IEnumerable<LifeState> pattern, IConsole console)
         {
             var column = 0;
             foreach (var state in pattern)
             {
-                consoleWriter.Write(DefaultSettings.ToString(state));
+                console.Write(DefaultSettings.ToString(state));
                 column++;
                 if (column > _columnDimension.Max)
                 {
-                    consoleWriter.Write(Environment.NewLine);
+                    console.Write(Environment.NewLine);
                     column = 0;
                 }
             }
@@ -57,33 +59,22 @@ namespace GameOfLife
         {
             var rowsInNeighborhood = _rowDimension.GetNeighborValues(centerCellPosition.DimensionOne);
             var columnsInNeighborhood = _columnDimension.GetNeighborValues(centerCellPosition.DimensionTwo);
-            foreach (var position in GetPositionsExcluding(rowsInNeighborhood, columnsInNeighborhood, centerCellPosition))
+
+            foreach (var position in GetPositionsExcluding(
+                rowsInNeighborhood, columnsInNeighborhood, new CellPosition[] { centerCellPosition }))
                 yield return position;
 
-            if (_rowDimension.IsOwnNeighbor())
-            {
+            if (_rowDimension.IsOwnNeighbor() || _columnDimension.IsOwnNeighbor())
                 yield return centerCellPosition;
-                yield return centerCellPosition;
-            }
-
-            if (_columnDimension.IsOwnNeighbor())
-            {
-                yield return centerCellPosition;
-                yield return centerCellPosition;
-            }
         }
 
         private IEnumerable<CellPosition> GetPositionsExcluding(
-            IEnumerable<uint> rowNumbersToInclude, IEnumerable<uint> columnNumbersToInclude, CellPosition excludeCellPosition)
+            IEnumerable<uint> rowNumbersToInclude, IEnumerable<uint> columnNumbersToInclude, IEnumerable<CellPosition> excludeCellPositions)
         {
-            foreach (var rowNumber in rowNumbersToInclude)
-            {
-                foreach (var columnNumber in columnNumbersToInclude)
-                {
-                    if (rowNumber != excludeCellPosition.DimensionOne || columnNumber != excludeCellPosition.DimensionTwo)
-                        yield return new CellPosition(rowNumber, columnNumber);
-                }
-            }
+            return rowNumbersToInclude.SelectMany(
+                r => columnNumbersToInclude, (r, c) => new CellPosition(r, c))
+                .Distinct()
+                .Except(excludeCellPositions);
         }
 
         public IEnumerator<CellPosition> GetEnumerator()
@@ -93,6 +84,11 @@ namespace GameOfLife
                 for (uint column = _columnDimension.Min; column <= _columnDimension.Max; column++)
                     yield return new CellPosition(row, column);
             }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 }

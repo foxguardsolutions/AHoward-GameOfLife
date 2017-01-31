@@ -20,7 +20,8 @@ namespace GameOfLife
         public void SetNextState(Cell cell, IEnumerable<Cell> neighbors)
         {
             var applicableRule = _rules[cell.CurrentState];
-            cell.NextState = applicableRule.Apply(neighbors);
+            var newState = applicableRule.Apply(neighbors);
+            cell.SetNextState(newState);
         }
 
         public bool IsComplete()

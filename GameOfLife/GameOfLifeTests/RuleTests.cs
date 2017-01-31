@@ -18,8 +18,7 @@ namespace GameOfLifeTests
         {
             _numbersYieldingLive = Fixture.CreateMany<uint>().ToArray();
             _ruleFactory = SetUpMockIRuleFactory();
-            _cells = MakeSomeLivingAndDeadCells(
-                _numbersYieldingLive[0], Fixture.Create<uint>());
+            _cells = MakeSomeLivingAndDeadCells(_numbersYieldingLive[0], Fixture.Create<uint>()).ToArray();
         }
 
         private IRuleFactory SetUpMockIRuleFactory()
@@ -30,29 +29,17 @@ namespace GameOfLifeTests
             return ruleFactoryMock.Object;
         }
 
-        private Cell[] MakeSomeLivingAndDeadCells(uint numberOfLiving, uint numberOfDead)
+        private IEnumerable<Cell> MakeSomeLivingAndDeadCells(uint numberOfLiving, uint numberOfDead)
         {
             var livingCells = MakeSomeCells(LifeState.Alive, numberOfLiving);
             var deadCells = MakeSomeCells(LifeState.Dead, numberOfDead);
-            return livingCells.Concat(deadCells).ToArray();
+            return livingCells.Concat(deadCells);
         }
 
         private IEnumerable<Cell> MakeSomeCells(LifeState cellState, uint numberToMake)
         {
             for (int i = 0; i < numberToMake; i++)
-                yield return MakeCellInState(cellState);
-        }
-
-        private Cell MakeCellInState(LifeState state)
-        {
-            var cell = Fixture.Create<Cell>();
-            if (cell.CurrentState != state)
-            {
-                Fixture.Create<LifeState>();
-                cell = Fixture.Create<Cell>();
-            }
-
-            return cell;
+                yield return new Cell(cellState);
         }
 
         [Test]

@@ -64,7 +64,7 @@ namespace GameOfLife
 
         public bool IsOwnNeighbor()
         {
-            return Max == 0 && _wraps;
+            return Max == Min && _wraps;
         }
     }
 }

@@ -27,25 +27,25 @@ namespace GameOfLifeTests
         }
 
         [Test]
-        public void GetNeighbors_GivenSingleCellGridThatWrapsOnOneDimension_YieldsSingleCellTwice()
+        public void GetNeighbors_GivenSingleCellGridThatWrapsOnOneDimension_YieldsSingleCell()
         {
             var grid = new SquareTileGrid(_cells, true, false);
             var onlyCellInTheGrid = grid.GetCellAt(_onlyPositionOnTheGrid);
             var neighborsOfSingleCell = grid.GetNeighborsOfCellAt(_onlyPositionOnTheGrid);
 
-            Assert.That(neighborsOfSingleCell, Has.Exactly(2).Items);
-            Assert.That(neighborsOfSingleCell, Has.Exactly(2).EqualTo(onlyCellInTheGrid));
+            Assert.That(neighborsOfSingleCell, Has.Exactly(1).Items);
+            Assert.That(neighborsOfSingleCell, Has.Exactly(1).EqualTo(onlyCellInTheGrid));
         }
 
         [Test]
-        public void GetNeighbors_GivenSingleCellGridThatWrapsOnBothDimension_YieldsSingleCellFourTimes()
+        public void GetNeighbors_GivenSingleCellGridThatWrapsOnBothDimension_YieldsSingleCell()
         {
             var grid = new SquareTileGrid(_cells, true, true);
             var onlyCellInTheGrid = grid.GetCellAt(_onlyPositionOnTheGrid);
             var neighborsOfSingleCell = grid.GetNeighborsOfCellAt(_onlyPositionOnTheGrid);
 
-            Assert.That(neighborsOfSingleCell, Has.Exactly(4).Items);
-            Assert.That(neighborsOfSingleCell, Has.Exactly(4).EqualTo(onlyCellInTheGrid));
+            Assert.That(neighborsOfSingleCell, Has.Exactly(1).Items);
+            Assert.That(neighborsOfSingleCell, Has.Exactly(1).EqualTo(onlyCellInTheGrid));
         }
     }
 }

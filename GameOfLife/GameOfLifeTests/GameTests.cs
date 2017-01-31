@@ -16,7 +16,7 @@ namespace GameOfLifeTests
 
         protected Mock<IRuleFactory> MockRuleFactory { get; private set; }
         protected Mock<IGridFactory> MockGridFactory { get; private set; }
-        protected Mock<IConsoleWriter> MockConsoleWriter { get; private set; }
+        protected Mock<IConsole> MockConsole { get; private set; }
         private Mock<IRuleset> _mockRuleset;
 
         [SetUp]
@@ -24,10 +24,10 @@ namespace GameOfLifeTests
         {
             var ruleFactory = SetUpMockIRuleFactory();
             var gridFactory = SetUpMockIGridFactory();
-            var consoleWriter = SetUpMockIConsoleWriter();
+            var console = SetUpMockIConsole();
             var ruleset = SetUpMockIRuleset();
 
-            Game = new Game(ruleFactory, gridFactory, consoleWriter, ruleset);
+            Game = new Game(ruleFactory, gridFactory, console, ruleset);
             Seed = Fixture.Create<LifeState[,]>();
         }
 
@@ -52,10 +52,10 @@ namespace GameOfLifeTests
             return MockGridFactory.Object;
         }
 
-        private IConsoleWriter SetUpMockIConsoleWriter()
+        private IConsole SetUpMockIConsole()
         {
-            MockConsoleWriter = new Mock<IConsoleWriter>();
-            return MockConsoleWriter.Object;
+            MockConsole = new Mock<IConsole>();
+            return MockConsole.Object;
         }
 
         private IRuleset SetUpMockIRuleset()
@@ -69,7 +69,7 @@ namespace GameOfLifeTests
             _mockRuleset.Setup(
                 r => r.SetNextState(It.IsAny<Cell>(), It.IsAny<IEnumerable<Cell>>()))
                 .Callback<Cell, IEnumerable<Cell>>(
-                    (c, n) => c.NextState = GetDefaultRuleFor(c.CurrentState).Apply(n));
+                    (c, n) => c.SetNextState(GetDefaultRuleFor(c.CurrentState).Apply(n)));
 
             return _mockRuleset.Object;
         }

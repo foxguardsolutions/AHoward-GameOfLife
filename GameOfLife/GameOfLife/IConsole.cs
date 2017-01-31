@@ -1,6 +1,6 @@
 ﻿namespace GameOfLife
 {
-    public interface IConsoleWriter
+    public interface IConsole
     {
         string ReadLine();
         void Write(string message, params object[] args);

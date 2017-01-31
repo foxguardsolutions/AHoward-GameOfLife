@@ -14,7 +14,7 @@ namespace GameOfLifeTests
 
             Game.Step();
 
-            MockConsoleWriter.Verify(c => c.WriteLine(expectedMessage));
+            MockConsole.Verify(c => c.WriteLine(expectedMessage));
         }
 
         [Test]
@@ -25,7 +25,7 @@ namespace GameOfLifeTests
 
             Game.Step();
 
-            MockConsoleWriter.Verify(c => c.WriteLine(expectedMessage));
+            MockConsole.Verify(c => c.WriteLine(expectedMessage));
         }
 
         [Test]
@@ -35,7 +35,7 @@ namespace GameOfLifeTests
 
             Game.WriteCurrentPatternToConsole();
 
-            MockConsoleWriter.Verify(c => c.Write(It.IsAny<string>()));
+            MockConsole.Verify(c => c.Write(It.IsAny<string>()));
         }
 
         [Test]

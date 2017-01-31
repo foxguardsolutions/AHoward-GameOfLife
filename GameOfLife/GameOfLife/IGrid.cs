@@ -2,12 +2,11 @@
 
 namespace GameOfLife
 {
-    public interface IGrid
+    public interface IGrid : IEnumerable<CellPosition>
     {
         IEnumerable<LifeState> GetCurrentPattern();
-        void WritePatternToConsole(IEnumerable<LifeState> pattern, IConsoleWriter consoleWriter);
+        void WritePatternToConsole(IEnumerable<LifeState> pattern, IConsole console);
         Cell GetCellAt(CellPosition cellPosition);
         IEnumerable<Cell> GetNeighborsOfCellAt(CellPosition centerCellPosition);
-        IEnumerator<CellPosition> GetEnumerator();
     }
 }

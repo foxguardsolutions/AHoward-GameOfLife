@@ -5,16 +5,16 @@ namespace GameOfLifeConsole
 {
     public class ConsoleInterface
     {
-        private IConsoleWriter _consoleWriter;
+        private IConsole _console;
         private IGame _game;
         private TextCommandParser _parser;
         private CommandRunner _runner;
 
         private const string _instructions = "Enter a command. {0}\"d\" to display the current cell arrangement,{0}\"s\" to step,{0}\"r\" to reload the grid, or{0}\"q\" to quit{0}> ";
 
-        public ConsoleInterface(IConsoleWriter consoleWriter, IGame game, TextCommandParser parser, CommandRunner runner)
+        public ConsoleInterface(IConsole console, IGame game, TextCommandParser parser, CommandRunner runner)
         {
-            _consoleWriter = consoleWriter;
+            _console = console;
             _game = game;
             _parser = parser;
             _runner = runner;
@@ -29,8 +29,8 @@ namespace GameOfLifeConsole
 
         private void WelcomeUser()
         {
-            _consoleWriter.WriteLine("Welcome to the game of life!");
-            _consoleWriter.WriteLine("Press any key to start the game...");
+            _console.WriteLine("Welcome to the game of life!");
+            _console.WriteLine("Press any key to start the game...");
         }
 
         private void InitializeGame()
@@ -46,19 +46,19 @@ namespace GameOfLifeConsole
                 _runner.Execute(command, _game);
                 WriteStateToConsole();
                 DisplayInstructions();
-                command = _parser.ParseCommand(_consoleWriter.ReadLine());
+                command = _parser.ParseCommand(_console.ReadLine());
             } while (command != Command.Quit);
         }
 
         private void WriteStateToConsole()
         {
-            _consoleWriter.WriteLine("Current game state: ");
+            _console.WriteLine("Current game state: ");
             _game.WriteCurrentPatternToConsole();
         }
 
         private void DisplayInstructions()
         {
-            _consoleWriter.Write(string.Format(_instructions, Environment.NewLine));
+            _console.Write(string.Format(_instructions, Environment.NewLine));
         }
     }
 }

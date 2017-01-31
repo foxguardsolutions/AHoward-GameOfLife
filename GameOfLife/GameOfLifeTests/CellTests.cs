@@ -28,7 +28,7 @@ namespace GameOfLifeTests
         public void AdvanceState_SetsCurrentStateToValueSetForNextState()
         {
             var state = Fixture.Create<LifeState>();
-            _cell.NextState = state;
+            _cell.SetNextState(state);
 
             _cell.AdvanceState();
             var currentState = _cell.CurrentState;

@@ -28,7 +28,7 @@ namespace GameOfLifeTests
 
         private static void SetToAlive(Cell cell)
         {
-            cell.NextState = LifeState.Alive;
+            cell.SetNextState(LifeState.Alive);
             cell.AdvanceState();
         }
 

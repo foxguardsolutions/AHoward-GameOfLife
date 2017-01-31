@@ -42,25 +42,25 @@ namespace GameOfLifeTests
         }
 
         [Test]
-        public void GetNeighbors_GivenCellPositionAtEndOfSingleRowGridThatWrapsOnlyOnTheSingleCellDimension_YieldsRowEndCellTwiceAndOneOtherNeighbor()
+        public void GetNeighbors_GivenCellPositionAtEndOfSingleRowGridThatWrapsOnlyOnTheSingleCellDimension_YieldsRowEndCellAndOneOtherNeighbor()
         {
             var grid = new SquareTileGrid(_cells, true, false);
             var cellAtEndOfRow = grid.GetCellAt(_positionAtOneEndOfRow);
             var neighborsOfCellAtEndOfRow = grid.GetNeighborsOfCellAt(_positionAtOneEndOfRow);
 
-            Assert.That(neighborsOfCellAtEndOfRow, Has.Exactly(3).Items);
-            Assert.That(neighborsOfCellAtEndOfRow, Has.Exactly(2).EqualTo(cellAtEndOfRow));
+            Assert.That(neighborsOfCellAtEndOfRow, Has.Exactly(2).Items);
+            Assert.That(neighborsOfCellAtEndOfRow, Has.Exactly(1).EqualTo(cellAtEndOfRow));
         }
 
         [Test]
-        public void GetNeighbors_GivenCellPositionInTheMiddleOfSingleRowGridThatWrapsOnTheSingleCellDimension_YieldsMiddleCellTwiceAndTwoOtherNeighbors()
+        public void GetNeighbors_GivenCellPositionInTheMiddleOfSingleRowGridThatWrapsOnTheSingleCellDimension_YieldsMiddleCellAndTwoOtherNeighbors()
         {
             var grid = new SquareTileGrid(_cells, true, Fixture.Create<bool>());
             var cellInMiddleOfRow = grid.GetCellAt(_positionInMiddleOfRow);
             var neighborsOfCellInMiddleOfRow = grid.GetNeighborsOfCellAt(_positionInMiddleOfRow);
 
-            Assert.That(neighborsOfCellInMiddleOfRow, Has.Exactly(4).Items);
-            Assert.That(neighborsOfCellInMiddleOfRow, Has.Exactly(2).EqualTo(cellInMiddleOfRow));
+            Assert.That(neighborsOfCellInMiddleOfRow, Has.Exactly(3).Items);
+            Assert.That(neighborsOfCellInMiddleOfRow, Has.Exactly(1).EqualTo(cellInMiddleOfRow));
         }
     }
 }

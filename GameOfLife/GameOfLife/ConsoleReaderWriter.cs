@@ -2,7 +2,7 @@
 
 namespace GameOfLife
 {
-    public class ConsoleWriter : IConsoleWriter
+    public class ConsoleReaderWriter : IConsole
     {
         public string ReadLine()
         {
