@@ -4,6 +4,28 @@ namespace GameOfLifeTests
 {
     public static class AutoFixtureExtension
     {
+        public static T[][] CreateRectangularJaggedArray<T>(this Fixture fixture)
+        {
+            var numberOfRows = fixture.Create<int>();
+            var numberOfColumns = fixture.Create<int>();
+
+            return fixture.CreateRectangularJaggedArray<T>(numberOfRows, numberOfColumns);
+        }
+
+        public static T[][] CreateRectangularJaggedArray<T>(this Fixture fixture, int numberOfRows, int numberOfColumns)
+        {
+            var array = new T[numberOfRows][];
+
+            for (int rowNumber = 0; rowNumber < numberOfRows; rowNumber++)
+            {
+                array[rowNumber] = new T[numberOfColumns];
+                for (int columnNumber = 0; columnNumber < numberOfColumns; columnNumber++)
+                    array[rowNumber][columnNumber] = fixture.Create<T>();
+            }
+
+            return array;
+        }
+
         public static T CreateInRange<T>(this Fixture fixture, int lowerLimit, int upperLimit)
         {
             fixture.Customizations.Add(new RandomNumericSequenceGenerator(lowerLimit, upperLimit));

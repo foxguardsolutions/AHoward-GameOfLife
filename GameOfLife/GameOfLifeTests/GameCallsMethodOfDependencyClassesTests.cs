@@ -1,4 +1,6 @@
-﻿using GameOfLife;
+﻿using System;
+using System.Linq;
+using GameOfLife;
 using Moq;
 using NUnit.Framework;
 using Ploeh.AutoFixture;
@@ -29,13 +31,28 @@ namespace GameOfLifeTests
         }
 
         [Test]
+        public void WriteCurrentPattern_WritesCorrectNumberOfTimesToTextWriter()
+        {
+            Game.Load(Seed);
+            var expectedPattern = MockGrid.GridWithGlider.GetCurrentPattern();
+            var expectedNumberOfNewLines = expectedPattern.Count();
+            var expectedNumberOfCellsWritten = expectedPattern.Count() * expectedPattern.First().Count();
+            var expectedNumberOfTotalWrites = expectedNumberOfCellsWritten + expectedNumberOfNewLines;
+
+            Game.WriteCurrentPattern(MockConsoleOut.Object);
+
+            MockConsoleOut.Verify(c => c.Write(Environment.NewLine), Times.Exactly(expectedNumberOfNewLines));
+            MockConsoleOut.Verify(c => c.Write(It.IsAny<string>()), Times.Exactly(expectedNumberOfTotalWrites));
+        }
+
+        [Test]
         public void WriteCurrentPatternToConsole_WritesToConsole()
         {
             Game.Load(Seed);
 
             Game.WriteCurrentPatternToConsole();
 
-            MockConsole.Verify(c => c.Write(It.IsAny<string>()));
+            MockConsoleOut.Verify(c => c.Write(It.IsAny<string>()));
         }
 
         [Test]

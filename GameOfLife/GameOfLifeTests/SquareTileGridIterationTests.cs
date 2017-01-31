@@ -8,13 +8,13 @@ namespace GameOfLifeTests
 {
     public class SquareTileGridIterationTests : BaseTests
     {
-        protected Cell[,] Cells { get; private set; }
+        protected Cell[][] Cells { get; private set; }
         protected SquareTileGrid Grid { get; private set; }
 
         [SetUp]
         public void SetUp()
         {
-            Cells = Fixture.Create<Cell[,]>();
+            Cells = Fixture.CreateRectangularJaggedArray<Cell>();
             Grid = new SquareTileGrid(Cells, Fixture.Create<bool>(), Fixture.Create<bool>());
         }
 
@@ -32,7 +32,7 @@ namespace GameOfLifeTests
         {
             var allPositions = IterateOver(Grid).ToArray();
             var position = Fixture.PickFromValues(allPositions);
-            var cellInInputArray = Cells[position.DimensionOne, position.DimensionTwo];
+            var cellInInputArray = Cells[position.DimensionOne][position.DimensionTwo];
             var cellAtPosition = Grid.GetCellAt(position);
 
             Assert.That(cellAtPosition, Is.EqualTo(cellInInputArray));
@@ -44,11 +44,11 @@ namespace GameOfLifeTests
                 yield return position;
         }
 
-        private IEnumerable<CellPosition> GetCartesianProductOfPositionsIn<T>(T[,] array)
+        private IEnumerable<CellPosition> GetCartesianProductOfPositionsIn<T>(T[][] array)
         {
-            for (uint i = 0; i < array.GetLength(0); i++)
+            for (uint i = 0; i < array.Length; i++)
             {
-                for (uint j = 0; j < array.GetLength(1); j++)
+                for (uint j = 0; j < array[i].Length; j++)
                     yield return new CellPosition(i, j);
             }
         }
@@ -56,9 +56,13 @@ namespace GameOfLifeTests
         [Test]
         public void GetCurrentPattern_WithoutAnyCellChanges_ReturnsPatternMatchingSeedPattern()
         {
-            var expectedPattern = new List<LifeState>();
-            foreach (var cell in Cells)
-                expectedPattern.Add(cell.CurrentState);
+            var expectedPattern = new LifeState[Cells.Length][];
+            for (int rowNumber = 0; rowNumber < Cells.Length; rowNumber++)
+            {
+                expectedPattern[rowNumber] = new LifeState[Cells[rowNumber].Length];
+                for (int columnNumber = 0; columnNumber < Cells[rowNumber].Length; columnNumber++)
+                    expectedPattern[rowNumber][columnNumber] = Cells[rowNumber][columnNumber].CurrentState;
+            }
 
             var pattern = Grid.GetCurrentPattern();
 

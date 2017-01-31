@@ -46,7 +46,7 @@
   <ItemGroup>
     <Compile Include="Cell.cs" />
     <Compile Include="CellPosition.cs" />
-    <Compile Include="ConsoleReaderWriter.cs" />
+    <Compile Include="TextReaderWriter.cs" />
     <Compile Include="DefaultSettings.cs" />
     <Compile Include="Dimension.cs" />
     <Compile Include="EnumExtension.cs" />

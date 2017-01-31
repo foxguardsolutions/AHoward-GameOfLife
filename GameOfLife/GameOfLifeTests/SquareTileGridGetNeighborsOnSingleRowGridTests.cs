@@ -6,7 +6,7 @@ namespace GameOfLifeTests
 {
     public class SquareTileGridGetNeighborsOnSingleRowGridTests : BaseTests
     {
-        private Cell[,] _cells;
+        private Cell[][] _cells;
         private CellPosition _positionAtOneEndOfRow;
         private CellPosition _positionInMiddleOfRow;
 
@@ -15,20 +15,13 @@ namespace GameOfLifeTests
         {
             var gridWidthNotIncludingEndCells = Fixture.Create<int>();
             var totalGridWidth = 1 + gridWidthNotIncludingEndCells + 1;
-            SetUpCells(totalGridWidth);
+            _cells = Fixture.CreateRectangularJaggedArray<Cell>(1, totalGridWidth);
 
             var columnAtOneEndOfRow = Fixture.PickFromValues<uint>(0, (uint)totalGridWidth - 1);
             _positionAtOneEndOfRow = new CellPosition(0, columnAtOneEndOfRow);
 
             var columnInMiddleOfRow = Fixture.CreateInRange<uint>(1, totalGridWidth - 2);
             _positionInMiddleOfRow = new CellPosition(0, columnInMiddleOfRow);
-        }
-
-        private void SetUpCells(int gridWidth)
-        {
-            _cells = new Cell[1, gridWidth];
-            for (int i = 0; i < gridWidth; i++)
-                _cells[0, i] = Fixture.Create<Cell>();
         }
 
         [Test]

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using GameOfLife;
 using Moq;
 using NUnit.Framework;
@@ -16,6 +17,7 @@ namespace GameOfLifeTests
 
         protected Mock<IRuleFactory> MockRuleFactory { get; private set; }
         protected Mock<IGridFactory> MockGridFactory { get; private set; }
+        protected Mock<TextWriter> MockConsoleOut { get; private set; }
         protected Mock<IConsole> MockConsole { get; private set; }
         private Mock<IRuleset> _mockRuleset;
 
@@ -24,7 +26,8 @@ namespace GameOfLifeTests
         {
             var ruleFactory = SetUpMockIRuleFactory();
             var gridFactory = SetUpMockIGridFactory();
-            var console = SetUpMockIConsole();
+            var textWriter = SetUpMockTextWriter();
+            var console = SetUpMockIConsole(textWriter);
             var ruleset = SetUpMockIRuleset();
 
             Game = new Game(ruleFactory, gridFactory, console, ruleset);
@@ -52,10 +55,17 @@ namespace GameOfLifeTests
             return MockGridFactory.Object;
         }
 
-        private IConsole SetUpMockIConsole()
+        private IConsole SetUpMockIConsole(TextWriter textWriter)
         {
             MockConsole = new Mock<IConsole>();
+            MockConsole.SetupGet(c => c.Out).Returns(textWriter);
             return MockConsole.Object;
+        }
+
+        private TextWriter SetUpMockTextWriter()
+        {
+            MockConsoleOut = new Mock<TextWriter>();
+            return MockConsoleOut.Object;
         }
 
         private IRuleset SetUpMockIRuleset()

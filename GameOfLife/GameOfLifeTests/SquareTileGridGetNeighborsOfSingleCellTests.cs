@@ -6,14 +6,13 @@ namespace GameOfLifeTests
 {
     public class SquareTileGridGetNeighborsOfSingleCellTests : BaseTests
     {
-        private Cell[,] _cells;
+        private Cell[][] _cells;
         private CellPosition _onlyPositionOnTheGrid;
 
         [SetUp]
         public void SetUp()
         {
-            _cells = new Cell[1, 1];
-            _cells[0, 0] = Fixture.Create<Cell>();
+            _cells = Fixture.CreateRectangularJaggedArray<Cell>(1, 1);
             _onlyPositionOnTheGrid = new CellPosition(0, 0);
         }
 

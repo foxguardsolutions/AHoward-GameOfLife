@@ -9,6 +9,6 @@ namespace GameOfLife
         void SetRuleFor(LifeState state, params uint[] neighborCountsYieldingLive);
         void Step();
         void WriteCurrentPatternToConsole();
-        IEnumerable<LifeState> GetCurrentPattern();
+        IEnumerable<IEnumerable<LifeState>> GetCurrentPattern();
     }
 }

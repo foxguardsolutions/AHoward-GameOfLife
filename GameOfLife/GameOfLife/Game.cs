@@ -1,18 +1,20 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 
 namespace GameOfLife
 {
     public class Game : IGame
     {
+        private const string GRID_NOT_LOADED = "A grid must be loaded before any steps can be taken.";
+        private const string INCOMPLETE_RULES = "Cannot step until rules have been defined for all possible cell states.";
+
         private IRuleFactory _ruleFactory;
         private IGridFactory _gridFactory;
         private IConsole _console;
         private IRuleset _rules;
         private IGrid _grid;
-        private List<IEnumerable<LifeState>> _generations;
-
-        public const string GRID_NOT_LOADED = "A grid must be loaded before any steps can be taken.";
-        public const string INCOMPLETE_RULES = "Cannot step until rules have been defined for all possible cell states.";
+        private List<IEnumerable<IEnumerable<LifeState>>> _generations;
 
         public Game(IRuleFactory ruleFactory, IGridFactory gridFactory, IConsole console, IRuleset rules)
         {
@@ -20,18 +22,36 @@ namespace GameOfLife
             _gridFactory = gridFactory;
             _console = console;
             _rules = rules;
-            _generations = new List<IEnumerable<LifeState>>();
+            _generations = new List<IEnumerable<IEnumerable<LifeState>>>();
         }
 
         public void WriteCurrentPatternToConsole()
         {
-            var currentPattern = GetCurrentPattern();
-            _grid.WritePatternToConsole(currentPattern, _console);
+            WriteCurrentPattern(_console.Out);
         }
 
-        public IEnumerable<LifeState> GetCurrentPattern()
+        public void WriteCurrentPattern(TextWriter textWriter)
+        {
+            var currentPattern = GetCurrentPattern();
+
+            foreach (var row in currentPattern)
+            {
+                foreach (var state in row)
+                    textWriter.Write(DefaultSettings.ToString(state));
+                textWriter.Write(Environment.NewLine);
+            }
+        }
+
+        public IEnumerable<IEnumerable<LifeState>> GetCurrentPattern()
         {
             return _generations[_generations.Count - 1];
+        }
+
+        public void Start()
+        {
+            Load(DefaultSettings.Seed, true, true);
+            SetRuleFor(LifeState.Alive, 2, 3);
+            SetRuleFor(LifeState.Dead, 3);
         }
 
         public void Load(LifeState[,] seed)
@@ -110,13 +130,6 @@ namespace GameOfLife
         public uint CountGenerations()
         {
             return (uint)_generations.Count;
-        }
-
-        public void Start()
-        {
-            Load(DefaultSettings.Seed, true, true);
-            SetRuleFor(LifeState.Alive, 2, 3);
-            SetRuleFor(LifeState.Dead, 3);
         }
     }
 }

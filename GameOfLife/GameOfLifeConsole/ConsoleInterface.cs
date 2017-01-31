@@ -5,12 +5,15 @@ namespace GameOfLifeConsole
 {
     public class ConsoleInterface
     {
+        private const string WELCOME = "Welcome to the game of life!";
+        private const string START_GAME = "Press any key to start the game...";
+        private const string GAME_STATE_HEADER = "Current game state: ";
+        private const string COMMAND_INSTRUCTIONS = "Enter a command. {0}\"d\" to display the current cell arrangement,{0}\"s\" to step,{0}\"r\" to reload the grid, or{0}\"q\" to quit{0}> ";
+
         private IConsole _console;
         private IGame _game;
         private TextCommandParser _parser;
         private CommandRunner _runner;
-
-        private const string _instructions = "Enter a command. {0}\"d\" to display the current cell arrangement,{0}\"s\" to step,{0}\"r\" to reload the grid, or{0}\"q\" to quit{0}> ";
 
         public ConsoleInterface(IConsole console, IGame game, TextCommandParser parser, CommandRunner runner)
         {
@@ -29,8 +32,8 @@ namespace GameOfLifeConsole
 
         private void WelcomeUser()
         {
-            _console.WriteLine("Welcome to the game of life!");
-            _console.WriteLine("Press any key to start the game...");
+            _console.WriteLine(WELCOME);
+            _console.WriteLine(START_GAME);
         }
 
         private void InitializeGame()
@@ -52,13 +55,13 @@ namespace GameOfLifeConsole
 
         private void WriteStateToConsole()
         {
-            _console.WriteLine("Current game state: ");
+            _console.WriteLine(GAME_STATE_HEADER);
             _game.WriteCurrentPatternToConsole();
         }
 
         private void DisplayInstructions()
         {
-            _console.Write(string.Format(_instructions, Environment.NewLine));
+            _console.Write(string.Format(COMMAND_INSTRUCTIONS, Environment.NewLine));
         }
     }
 }

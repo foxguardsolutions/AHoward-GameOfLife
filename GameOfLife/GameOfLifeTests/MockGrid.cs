@@ -13,11 +13,11 @@ namespace GameOfLifeTests
 
                 var liveCells = new List<Cell>()
                 {
-                    cells[0, 4],
-                    cells[1, 2],
-                    cells[1, 4],
-                    cells[2, 3],
-                    cells[2, 4]
+                    cells[0][4],
+                    cells[1][2],
+                    cells[1][4],
+                    cells[2][3],
+                    cells[2][4]
                 };
                 foreach (var cell in liveCells)
                     SetToAlive(cell);
@@ -32,13 +32,14 @@ namespace GameOfLifeTests
             cell.AdvanceState();
         }
 
-        private static Cell[,] MakeDeadCells(uint numberOfRows, uint numberOfColumns)
+        private static Cell[][] MakeDeadCells(uint numberOfRows, uint numberOfColumns)
         {
-            var cells = new Cell[numberOfRows, numberOfColumns];
+            var cells = new Cell[numberOfRows][];
             for (int row = 0; row < numberOfRows; row++)
             {
+                cells[row] = new Cell[numberOfColumns];
                 for (int column = 0; column < numberOfColumns; column++)
-                    cells[row, column] = new Cell(LifeState.Dead);
+                    cells[row][column] = new Cell(LifeState.Dead);
             }
 
             return cells;

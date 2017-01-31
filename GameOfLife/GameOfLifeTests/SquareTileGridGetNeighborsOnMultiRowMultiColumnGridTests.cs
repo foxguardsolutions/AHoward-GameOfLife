@@ -6,7 +6,7 @@ namespace GameOfLifeTests
 {
     public class SquareTileGridGetNeighborsOnMultiRowMultiColumnGridTests : BaseTests
     {
-        private Cell[,] _cells;
+        private Cell[][] _cells;
 
         private uint _rowOnOneEdgeOfGrid;
         private uint _columnOnOneEdgeOfGrid;
@@ -21,23 +21,14 @@ namespace GameOfLifeTests
             var gridWidthNotIncludingEdgeColumns = Fixture.Create<int>();
             var totalGridHeight = 1 + gridHeightNotIncludingEdgeRows + 1;
             var totalGridWidth = 1 + gridWidthNotIncludingEdgeColumns + 1;
-            SetUpCells(totalGridHeight, totalGridWidth);
+
+            _cells = Fixture.CreateRectangularJaggedArray<Cell>(totalGridHeight, totalGridWidth);
 
             _rowOnOneEdgeOfGrid = Fixture.PickFromValues<uint>(0, (uint)totalGridHeight - 1);
             _columnOnOneEdgeOfGrid = Fixture.PickFromValues<uint>(0, (uint)totalGridWidth - 1);
 
             _rowNotOnEdgeOfGrid = Fixture.CreateInRange<uint>(1, totalGridHeight - 2);
             _columnNotOnEdgeOfGrid = Fixture.CreateInRange<uint>(1, totalGridWidth - 2);
-        }
-
-        private void SetUpCells(int gridHeight, int gridWidth)
-        {
-            _cells = new Cell[gridHeight, gridWidth];
-            for (int row = 0; row < gridHeight; row++)
-            {
-                for (int column = 0; column < gridWidth; column++)
-                    _cells[row, column] = Fixture.Create<Cell>();
-            }
         }
 
         [Test]

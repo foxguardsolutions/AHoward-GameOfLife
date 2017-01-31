@@ -4,8 +4,7 @@ namespace GameOfLife
 {
     public interface IGrid : IEnumerable<CellPosition>
     {
-        IEnumerable<LifeState> GetCurrentPattern();
-        void WritePatternToConsole(IEnumerable<LifeState> pattern, IConsole console);
+        IEnumerable<IEnumerable<LifeState>> GetCurrentPattern();
         Cell GetCellAt(CellPosition cellPosition);
         IEnumerable<Cell> GetNeighborsOfCellAt(CellPosition centerCellPosition);
     }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -7,45 +6,40 @@ namespace GameOfLife
 {
     public class SquareTileGrid : IGrid
     {
-        private Cell[,] _cells;
+        private Cell[][] _cells;
         private Dimension _rowDimension;
         private Dimension _columnDimension;
 
-        public SquareTileGrid(Cell[,] cells, bool wrapsOnRows, bool wrapsOnColumns)
+        public SquareTileGrid(Cell[][] cells, bool wrapsOnRows, bool wrapsOnColumns)
         {
             _cells = cells;
-            _rowDimension = new Dimension((uint)cells.GetLength(0), wrapsOnRows);
-            _columnDimension = new Dimension((uint)cells.GetLength(1), wrapsOnColumns);
+            _rowDimension = new Dimension((uint)cells.Length, wrapsOnRows);
+            _columnDimension = new Dimension((uint)cells[0].Length, wrapsOnColumns);
         }
 
-        public IEnumerable<LifeState> GetCurrentPattern()
+        public IEnumerable<IEnumerable<LifeState>> GetCurrentPattern()
         {
-            var pattern = new LifeState[_cells.GetLength(0), _cells.GetLength(1)];
-            foreach (var position in this)
-                pattern[position.DimensionOne, position.DimensionTwo] = GetCellAt(position).CurrentState;
-
-            foreach (var state in pattern)
-                yield return state;
-        }
-
-        public void WritePatternToConsole(IEnumerable<LifeState> pattern, IConsole console)
-        {
-            var column = 0;
-            foreach (var state in pattern)
+            var pattern = new LifeState[_cells.Length][];
+            for (uint rowNumber = 0; rowNumber < _cells.Length; rowNumber++)
             {
-                console.Write(DefaultSettings.ToString(state));
-                column++;
-                if (column > _columnDimension.Max)
-                {
-                    console.Write(Environment.NewLine);
-                    column = 0;
-                }
+                var row = GetRowPattern(rowNumber);
+                yield return row;
             }
+        }
+
+        private IEnumerable<LifeState> GetRowPattern(uint rowNumber)
+        {
+            var cellsInRow = _cells[rowNumber].Length;
+            var pattern = new LifeState[cellsInRow];
+            for (uint columnNumber = 0; columnNumber < cellsInRow; columnNumber++)
+                pattern[columnNumber] = GetCellAt(new CellPosition(rowNumber, columnNumber)).CurrentState;
+
+            return pattern;
         }
 
         public Cell GetCellAt(CellPosition cellPosition)
         {
-            return _cells[cellPosition.DimensionOne, cellPosition.DimensionTwo];
+            return _cells[cellPosition.DimensionOne][cellPosition.DimensionTwo];
         }
 
         public IEnumerable<Cell> GetNeighborsOfCellAt(CellPosition centerCellPosition)

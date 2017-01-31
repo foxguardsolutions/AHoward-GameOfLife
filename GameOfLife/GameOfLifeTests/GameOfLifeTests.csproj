@@ -92,7 +92,6 @@
     <Compile Include="SquareTileGridGetNeighborsOnMultiRowMultiColumnGridTests.cs" />
     <Compile Include="SquareTileGridGetNeighborsOnSingleRowGridTests.cs" />
     <Compile Include="SquareTileGridIterationTests.cs" />
-    <Compile Include="SquareTileGridWritesToConsoleTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
