@@ -8,7 +8,8 @@ namespace GameOfLifeTests
         [Test]
         public void GetCurrentPattern_BeforeAnySteps_ReturnsPatternWithoutChanges()
         {
-            Game.Load(Seed);
+            // Game.Load(Seed);
+            // ^ Mock this
             var pattern = Game.GetCurrentPattern();
 
             Assert.That(pattern, Is.EqualTo(GliderPatternOne));
@@ -17,10 +18,12 @@ namespace GameOfLifeTests
         [Test]
         public void GetCurrentPattern_AfterSteps_ReturnsAdvancedPattern()
         {
-            Game.Load(Seed);
-            Game.SetRuleFor(LifeState.Alive, 2, 3);
-            Game.SetRuleFor(LifeState.Dead, 3);
+            // Game.Load(Seed);
+            // ^ Mock this
 
+            // Game.SetRuleFor(LifeState.Alive, 2, 3);
+            // Game.SetRuleFor(LifeState.Dead, 3);
+            // ^ Mock this
             Game.Step();
             var pattern = Game.GetCurrentPattern();
 

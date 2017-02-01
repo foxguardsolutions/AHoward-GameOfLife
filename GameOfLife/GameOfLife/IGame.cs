@@ -4,9 +4,9 @@ namespace GameOfLife
 {
     public interface IGame
     {
-        void Start();
-        void Load(LifeState[,] seed, bool wrapsOnRows, bool wrapsOnColumns);
-        void SetRuleFor(LifeState state, params uint[] neighborCountsYieldingLive);
+        IGrid Grid { get; set; }
+        IRuleset Rules { get; set; }
+        IList<IEnumerable<IEnumerable<LifeState>>> Generations { get; set; }
         void Step();
         void WriteCurrentPatternToConsole();
         IEnumerable<IEnumerable<LifeState>> GetCurrentPattern();

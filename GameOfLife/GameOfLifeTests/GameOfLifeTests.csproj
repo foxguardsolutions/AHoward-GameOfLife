@@ -78,6 +78,7 @@
     <Compile Include="ConsoleTextCommandParserTests.cs" />
     <Compile Include="DimensionTests.cs" />
     <Compile Include="EnumExtensionTests.cs" />
+    <Compile Include="GameAdvancerTests.cs" />
     <Compile Include="GameCallsMethodOfDependencyClassesTests.cs" />
     <Compile Include="GameExecutesStepTests.cs" />
     <Compile Include="GameGridPatternTests.cs" />
@@ -88,6 +89,9 @@
     <Compile Include="RuleFactoryTests.cs" />
     <Compile Include="RulesetTests.cs" />
     <Compile Include="RuleTests.cs" />
+    <Compile Include="GameConfiguratorLoadGridTests.cs" />
+    <Compile Include="GameConfiguratorSetRuleForTests.cs" />
+    <Compile Include="GameConfiguratorTests.cs" />
     <Compile Include="SquareTileGridGetNeighborsOfSingleCellTests.cs" />
     <Compile Include="SquareTileGridGetNeighborsOnMultiRowMultiColumnGridTests.cs" />
     <Compile Include="SquareTileGridGetNeighborsOnSingleRowGridTests.cs" />

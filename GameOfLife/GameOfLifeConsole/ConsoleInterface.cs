@@ -10,12 +10,12 @@ namespace GameOfLifeConsole
         private const string GAME_STATE_HEADER = "Current game state: ";
         private const string COMMAND_INSTRUCTIONS = "Enter a command. {0}\"d\" to display the current cell arrangement,{0}\"s\" to step,{0}\"r\" to reload the grid, or{0}\"q\" to quit{0}> ";
 
-        private IConsole _console;
+        private IConsoleReaderWriter _console;
         private IGame _game;
         private TextCommandParser _parser;
         private CommandRunner _runner;
 
-        public ConsoleInterface(IConsole console, IGame game, TextCommandParser parser, CommandRunner runner)
+        public ConsoleInterface(IConsoleReaderWriter console, IGame game, TextCommandParser parser, CommandRunner runner)
         {
             _console = console;
             _game = game;

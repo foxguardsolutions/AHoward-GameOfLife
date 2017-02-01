@@ -18,8 +18,8 @@ namespace GameOfLifeTests
         [Test]
         public void CountGenerations_AfterLoad_ReturnsOne()
         {
-            Game.Load(Seed);
-
+            // Game.Load(Seed);
+            // ^ Mock this
             var generationCount = Game.CountGenerations();
 
             Assert.That(generationCount, Is.EqualTo(1));
@@ -28,7 +28,8 @@ namespace GameOfLifeTests
         [Test]
         public void Step_BeforeAnyRuleLoad_DoesNotPerformAnyAction()
         {
-            Game.Load(Seed);
+            // Game.Load(Seed);
+            // ^ Mock this
             var initialGenerationCount = Game.CountGenerations();
 
             TakeSomeSteps();
@@ -41,10 +42,12 @@ namespace GameOfLifeTests
         [Test]
         public void Step_BeforeCompleteRuleLoad_DoesNotPerformAnyAction()
         {
-            Game.Load(Seed);
+            // Game.Load(Seed);
+            // ^ Mock this
             var initialGenerationCount = Game.CountGenerations();
-            Game.SetRuleFor(Fixture.Create<LifeState>());
 
+            // Game.SetRuleFor(Fixture.Create<LifeState>());
+            // ^ Mock this
             TakeSomeSteps();
 
             var finalGenerationCount = Game.CountGenerations();
@@ -55,11 +58,13 @@ namespace GameOfLifeTests
         [Test]
         public void Step_AfterCompleteRuleLoad_SavesANewGeneration()
         {
-            Game.Load(Seed);
+            // Game.Load(Seed);
+            // ^ Mock this
             var initialGenerationCount = Game.CountGenerations();
-            foreach (LifeState state in Enum.GetValues(typeof(LifeState)))
-                Game.SetRuleFor(state);
 
+            // foreach (LifeState state in Enum.GetValues(typeof(LifeState)))
+            //    Game.SetRuleFor(state);
+            // ^ Mock this
             var numberOfSteps = TakeSomeSteps();
 
             var finalGenerationCount = Game.CountGenerations();

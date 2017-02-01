@@ -11,7 +11,7 @@ namespace GameOfLifeTests
     {
         private Mock<CommandRunner> _commandRunnerMock;
         private Mock<TextCommandParser> _commandParserMock;
-        private Mock<IConsole> _consoleMock;
+        private Mock<IConsoleReaderWriter> _consoleMock;
         private Mock<IGame> _gameMock;
         private IGame _game;
 
@@ -22,7 +22,7 @@ namespace GameOfLifeTests
         {
             _commandRunnerMock = new Mock<CommandRunner>();
             _commandParserMock = new Mock<TextCommandParser>();
-            _consoleMock = new Mock<IConsole>();
+            _consoleMock = new Mock<IConsoleReaderWriter>();
             _gameMock = new Mock<IGame>();
             _game = _gameMock.Object;
 

@@ -3,7 +3,7 @@ using System.IO;
 
 namespace GameOfLife
 {
-    public class TextReaderWriter : IConsole
+    public class TextReaderWriter : IConsoleReaderWriter
     {
         public TextReader In { get; set; }
         public TextWriter Out { get; set; }

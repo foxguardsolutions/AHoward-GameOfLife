@@ -18,7 +18,7 @@ namespace GameOfLifeTests
         protected Mock<IRuleFactory> MockRuleFactory { get; private set; }
         protected Mock<IGridFactory> MockGridFactory { get; private set; }
         protected Mock<TextWriter> MockConsoleOut { get; private set; }
-        protected Mock<IConsole> MockConsole { get; private set; }
+        protected Mock<IConsoleReaderWriter> MockConsole { get; private set; }
         private Mock<IRuleset> _mockRuleset;
 
         [SetUp]
@@ -55,9 +55,9 @@ namespace GameOfLifeTests
             return MockGridFactory.Object;
         }
 
-        private IConsole SetUpMockIConsole(TextWriter textWriter)
+        private IConsoleReaderWriter SetUpMockIConsole(TextWriter textWriter)
         {
-            MockConsole = new Mock<IConsole>();
+            MockConsole = new Mock<IConsoleReaderWriter>();
             MockConsole.SetupGet(c => c.Out).Returns(textWriter);
             return MockConsole.Object;
         }

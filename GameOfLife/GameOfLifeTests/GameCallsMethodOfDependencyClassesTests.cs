@@ -23,8 +23,9 @@ namespace GameOfLifeTests
         public void Step_GivenIncompleteRuleset_WritesMessageToConsole()
         {
             var expectedMessage = "Cannot step until rules have been defined for all possible cell states.";
-            Game.Load(Seed);
 
+            // Game.Load(Seed);
+            // ^ Mock this
             Game.Step();
 
             MockConsole.Verify(c => c.WriteLine(expectedMessage));
@@ -33,7 +34,8 @@ namespace GameOfLifeTests
         [Test]
         public void WriteCurrentPattern_WritesCorrectNumberOfTimesToTextWriter()
         {
-            Game.Load(Seed);
+            // Game.Load(Seed);
+            // ^ Mock this
             var expectedPattern = MockGrid.GridWithGlider.GetCurrentPattern();
             var expectedNumberOfNewLines = expectedPattern.Count();
             var expectedNumberOfCellsWritten = expectedPattern.Count() * expectedPattern.First().Count();
@@ -48,42 +50,11 @@ namespace GameOfLifeTests
         [Test]
         public void WriteCurrentPatternToConsole_WritesToConsole()
         {
-            Game.Load(Seed);
-
+            // Game.Load(Seed);
+            // ^ Mock this
             Game.WriteCurrentPatternToConsole();
 
             MockConsoleOut.Verify(c => c.Write(It.IsAny<string>()));
-        }
-
-        [Test]
-        public void Load_GivenWrappingRules_CallsGridFactorysCreateWithWrappingRules()
-        {
-            var wrapsOnRows = Fixture.Create<bool>();
-            var wrapsOnColumns = Fixture.Create<bool>();
-
-            Game.Load(Seed, wrapsOnRows, wrapsOnColumns);
-
-            MockGridFactory.Verify(g => g.CreateSquareTileGrid(Seed, wrapsOnRows, wrapsOnColumns));
-        }
-
-        [Test]
-        public void Load_WithoutWrappingRules_CallsGridFactorysCreateWithDefaultWrappingRules()
-        {
-            Game.Load(Seed);
-
-            MockGridFactory.Verify(g => g.CreateSquareTileGrid(Seed, false, false));
-        }
-
-        [Test]
-        public void SetRule_CallsRuleFactorysCreateAndRulesetIndexerSetter()
-        {
-            var state = Fixture.Create<LifeState>();
-            var numbers = Fixture.Create<uint[]>();
-
-            Game.SetRuleFor(state, numbers);
-
-            MockRuleFactory.Verify(r => r.Create(numbers));
-            Assert.That(RulesAlreadySet, Contains.Item(state));
         }
     }
 }

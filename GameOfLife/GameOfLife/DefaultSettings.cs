@@ -4,6 +4,16 @@ namespace GameOfLife
 {
     public static class DefaultSettings
     {
+        public static uint[] SurvivalNumbers
+        {
+            get { return new uint[] { 2, 3 }; }
+        }
+
+        public static uint[] ReproductionNumbers
+        {
+            get { return new uint[] { 2 }; }
+        }
+
         public static LifeState[,] Seed
         {
             get { return MakeDefaultSeed(); }

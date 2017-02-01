@@ -8,8 +8,8 @@ namespace GameOfLifeConsole
         {
             if (command == Command.Display || command == Command.Quit)
                 return;
-            else if (command == Command.Reload)
-                game.Start();
+            // else if (command == Command.Reload)
+            //    game.Start();
             else
                 game.Step();
         }

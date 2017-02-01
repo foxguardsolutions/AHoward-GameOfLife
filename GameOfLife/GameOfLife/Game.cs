@@ -11,18 +11,19 @@ namespace GameOfLife
 
         private IRuleFactory _ruleFactory;
         private IGridFactory _gridFactory;
-        private IConsole _console;
-        private IRuleset _rules;
-        private IGrid _grid;
-        private List<IEnumerable<IEnumerable<LifeState>>> _generations;
+        private IConsoleReaderWriter _console;
 
-        public Game(IRuleFactory ruleFactory, IGridFactory gridFactory, IConsole console, IRuleset rules)
+        public IRuleset Rules { get; set; }
+        public IGrid Grid { get; set; }
+        public IList<IEnumerable<IEnumerable<LifeState>>> Generations { get; set; }
+
+        public Game(IRuleFactory ruleFactory, IGridFactory gridFactory, IConsoleReaderWriter console, IRuleset rules)
         {
             _ruleFactory = ruleFactory;
             _gridFactory = gridFactory;
             _console = console;
-            _rules = rules;
-            _generations = new List<IEnumerable<IEnumerable<LifeState>>>();
+            Rules = rules;
+            Generations = new List<IEnumerable<IEnumerable<LifeState>>>();
         }
 
         public void WriteCurrentPatternToConsole()
@@ -44,31 +45,7 @@ namespace GameOfLife
 
         public IEnumerable<IEnumerable<LifeState>> GetCurrentPattern()
         {
-            return _generations[_generations.Count - 1];
-        }
-
-        public void Start()
-        {
-            Load(DefaultSettings.Seed, true, true);
-            SetRuleFor(LifeState.Alive, 2, 3);
-            SetRuleFor(LifeState.Dead, 3);
-        }
-
-        public void Load(LifeState[,] seed)
-        {
-            Load(seed, false, false);
-        }
-
-        public void Load(LifeState[,] seed, bool wrapsOnRows, bool wrapsOnColumns)
-        {
-            _grid = _gridFactory.CreateSquareTileGrid(seed, wrapsOnRows, wrapsOnColumns);
-            _generations.Add(_grid.GetCurrentPattern());
-        }
-
-        public void SetRuleFor(LifeState state, params uint[] neighborCountsYieldingLive)
-        {
-            var newRule = _ruleFactory.Create(neighborCountsYieldingLive);
-            _rules[state] = newRule;
+            return Generations[Generations.Count - 1];
         }
 
         public void Step()
@@ -77,19 +54,19 @@ namespace GameOfLife
             {
                 ApplyRulesToGrid();
                 AdvanceGridState();
-                _generations.Add(_grid.GetCurrentPattern());
+                Generations.Add(Grid.GetCurrentPattern());
             }
         }
 
         private bool IsReadyToStep()
         {
-            if (_grid == null)
+            if (Grid == null)
             {
                 _console.WriteLine(GRID_NOT_LOADED);
                 return false;
             }
 
-            if (!_rules.IsComplete())
+            if (!Rules.IsComplete())
             {
                 _console.WriteLine(INCOMPLETE_RULES);
                 return false;
@@ -100,7 +77,7 @@ namespace GameOfLife
 
         private void ApplyRulesToGrid()
         {
-            foreach (var cellPosition in _grid)
+            foreach (var cellPosition in Grid)
             {
                 ApplyRulesToCellAt(cellPosition);
             }
@@ -108,14 +85,14 @@ namespace GameOfLife
 
         private void ApplyRulesToCellAt(CellPosition position)
         {
-            var cell = _grid.GetCellAt(position);
-            var neighbors = _grid.GetNeighborsOfCellAt(position);
-            _rules.SetNextState(cell, neighbors);
+            var cell = Grid.GetCellAt(position);
+            var neighbors = Grid.GetNeighborsOfCellAt(position);
+            Rules.SetNextState(cell, neighbors);
         }
 
         private void AdvanceGridState()
         {
-            foreach (var cellPosition in _grid)
+            foreach (var cellPosition in Grid)
             {
                 AdvanceStateOfCellAt(cellPosition);
             }
@@ -123,13 +100,13 @@ namespace GameOfLife
 
         private void AdvanceStateOfCellAt(CellPosition position)
         {
-            var cell = _grid.GetCellAt(position);
+            var cell = Grid.GetCellAt(position);
             cell.AdvanceState();
         }
 
         public uint CountGenerations()
         {
-            return (uint)_generations.Count;
+            return (uint)Generations.Count;
         }
     }
 }
