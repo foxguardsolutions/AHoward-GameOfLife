@@ -11,7 +11,7 @@ namespace GameOfLife
 
         public static uint[] ReproductionNumbers
         {
-            get { return new uint[] { 2 }; }
+            get { return new uint[] { 3 }; }
         }
 
         public static LifeState[,] Seed
@@ -30,15 +30,16 @@ namespace GameOfLife
             return seed;
         }
 
-        private static Dictionary<LifeState, string> _stateRepresentations = new Dictionary<LifeState, string>
+        public static Dictionary<LifeState, string> StateRepresentations
         {
-            { LifeState.Alive, "*" },
-            { LifeState.Dead, "-" }
-        };
-
-        public static string ToString(LifeState state)
-        {
-            return _stateRepresentations[state];
+            get
+            {
+                return new Dictionary<LifeState, string>
+                    {
+                        { LifeState.Alive, "*" },
+                        { LifeState.Dead, "-" }
+                    };
+            }
         }
     }
 }

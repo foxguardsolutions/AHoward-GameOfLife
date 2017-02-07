@@ -5,28 +5,37 @@ namespace GameOfLife
 {
     public class Ruleset : IRuleset
     {
-        private Dictionary<LifeState, IRule> _rules;
+        private IRuleFactory _ruleFactory;
+        public Dictionary<LifeState, IRule> Rules { get; private set; }
 
-        public Ruleset()
+        public Ruleset(IRuleFactory ruleFactory)
         {
-            _rules = new Dictionary<LifeState, IRule>();
+            _ruleFactory = ruleFactory;
+            Rules = new Dictionary<LifeState, IRule>();
         }
 
-        public IRule this[LifeState state]
+        public void SetRuleFor(LifeState state, params uint[] numbersYieldingLive)
         {
-            set { _rules[state] = value; }
+            var newRule = _ruleFactory.CreateRule(numbersYieldingLive);
+            Rules[state] = newRule;
         }
 
-        public void SetNextState(Cell cell, IEnumerable<Cell> neighbors)
+        public void SetDefaultRules()
         {
-            var applicableRule = _rules[cell.CurrentState];
-            var newState = applicableRule.Apply(neighbors);
-            cell.SetNextState(newState);
+            SetRuleFor(LifeState.Alive, DefaultSettings.SurvivalNumbers);
+            SetRuleFor(LifeState.Dead, DefaultSettings.ReproductionNumbers);
         }
 
         public bool IsComplete()
         {
-            return ForEvery<LifeState>(_rules.ContainsKey);
+            return ForEvery<LifeState>(Rules.ContainsKey);
+        }
+
+        public void SetNextStateOfCellGivenNeighbors(Cell cell, IEnumerable<Cell> neighbors)
+        {
+            var applicableRule = Rules[cell.CurrentState];
+            var newState = applicableRule.Apply(neighbors);
+            cell.SetNextState(newState);
         }
     }
 }

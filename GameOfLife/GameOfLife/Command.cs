@@ -1,4 +1,4 @@
-﻿namespace GameOfLifeConsole
+﻿namespace GameOfLife
 {
     public enum Command
     {

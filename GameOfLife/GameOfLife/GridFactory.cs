@@ -13,6 +13,12 @@
             return new SquareTileGrid(cells, wrapsOnRows, wrapsOnColumns);
         }
 
+        public SquareTileGrid CreateDefaultGrid()
+        {
+            var cells = InitializeCells(DefaultSettings.Seed);
+            return new SquareTileGrid(cells, true, true);
+        }
+
         private Cell[][] InitializeCells(LifeState[,] seed)
         {
             var cells = new Cell[seed.GetLength(0)][];

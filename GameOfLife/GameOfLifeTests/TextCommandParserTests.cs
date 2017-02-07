@@ -1,10 +1,11 @@
-﻿using GameOfLifeConsole;
+﻿using GameOfLife;
+using GameOfLifeConsole;
 using NUnit.Framework;
 using Ploeh.AutoFixture;
 
 namespace GameOfLifeTests
 {
-    public class ConsoleTextCommandParserTests : BaseTests
+    public class TextCommandParserTests : BaseTests
     {
         private TextCommandParser _commandParser;
 

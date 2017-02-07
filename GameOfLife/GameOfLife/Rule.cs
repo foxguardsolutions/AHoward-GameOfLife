@@ -6,11 +6,11 @@ namespace GameOfLife
 {
     public class Rule : IRule
     {
-        private uint[] _numbersYieldingLife;
+        public uint[] NumbersYieldingLife { get; private set; }
 
         public Rule(uint[] numbersYieldingLife)
         {
-            _numbersYieldingLife = numbersYieldingLife;
+            NumbersYieldingLife = numbersYieldingLife;
         }
 
         public LifeState Apply(IEnumerable<Cell> neighboringCells)
@@ -18,7 +18,7 @@ namespace GameOfLife
             var liveCellCount = (uint)neighboringCells
                 .Where(cell => cell.CurrentState == Alive)
                 .Count();
-            if (_numbersYieldingLife.Contains(liveCellCount))
+            if (NumbersYieldingLife.Contains(liveCellCount))
                 return Alive;
             return Dead;
         }

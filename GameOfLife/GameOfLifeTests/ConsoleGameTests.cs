@@ -7,34 +7,30 @@ using Ploeh.AutoFixture;
 
 namespace GameOfLifeTests
 {
-    public class ConsoleInterfaceTests : BaseTests
+    public class ConsoleGameTests : BaseTests
     {
-        private Mock<CommandRunner> _commandRunnerMock;
+        private Mock<ICommandRunner> _commandRunnerMock;
         private Mock<TextCommandParser> _commandParserMock;
         private Mock<IConsoleReaderWriter> _consoleMock;
-        private Mock<IGame> _gameMock;
-        private IGame _game;
 
-        private ConsoleInterface _consoleInterface;
+        private GameOfLifeConsole.ConsoleGame _consoleInterface;
 
         [SetUp]
         public void Setup()
         {
-            _commandRunnerMock = new Mock<CommandRunner>();
             _commandParserMock = new Mock<TextCommandParser>();
-            _consoleMock = new Mock<IConsoleReaderWriter>();
-            _gameMock = new Mock<IGame>();
-            _game = _gameMock.Object;
+            Fixture.Register(() => _commandParserMock.Object);
+            _commandRunnerMock = Fixture.Freeze<Mock<ICommandRunner>>();
+            _consoleMock = Fixture.Freeze<Mock<IConsoleReaderWriter>>();
 
-            _consoleInterface = new ConsoleInterface(
-                _consoleMock.Object, _gameMock.Object, _commandParserMock.Object, _commandRunnerMock.Object);
+            _consoleInterface = Fixture.Create<ConsoleGame>();
         }
 
         [Test]
         public void Start_RunsThroughGameProcedure()
         {
-            _consoleMock.Setup(c => c.ReadLine()).Returns(Fixture.Create<string>());
-            _commandParserMock.Setup(p => p.ParseCommand(It.IsAny<string>())).Returns(Command.Quit);
+            GivenUserSuppliesQuitCommandWhenPrompted();
+
             _consoleInterface.Start();
 
             VerifyDisplaysWelcomeMessage();
@@ -42,6 +38,12 @@ namespace GameOfLifeTests
             VerifyDisplaysGrid();
             VerifyPromptsUserForCommand();
             VerifyParsesUserCommand();
+        }
+
+        private void GivenUserSuppliesQuitCommandWhenPrompted()
+        {
+            _consoleMock.Setup(c => c.ReadLine()).Returns(It.IsAny<string>());
+            _commandParserMock.Setup(c => c.ParseCommand(It.IsAny<string>())).Returns(Command.Quit);
         }
 
         private void VerifyDisplaysWelcomeMessage()
@@ -52,14 +54,13 @@ namespace GameOfLifeTests
         private void VerifyLoadsNewGame()
         {
             _consoleMock.Verify(c => c.WriteLine("Press any key to start the game..."));
-            _commandRunnerMock.Verify(r => r.Execute(Command.Reload, _game));
+            _commandRunnerMock.Verify(r => r.Execute(Command.Reload));
         }
 
         private void VerifyDisplaysGrid()
         {
-            _commandRunnerMock.Verify(r => r.Execute(Command.Display, _game));
             _consoleMock.Verify(c => c.WriteLine("Current game state: "));
-            _gameMock.Verify(g => g.WriteCurrentPatternToConsole());
+            _commandRunnerMock.Verify(r => r.Execute(Command.Display));
         }
 
         private void VerifyPromptsUserForCommand()

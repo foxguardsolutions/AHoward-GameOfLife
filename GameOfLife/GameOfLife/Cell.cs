@@ -15,7 +15,7 @@
             _nextState = newState;
         }
 
-        public void AdvanceState()
+        public virtual void AdvanceState()
         {
             CurrentState = _nextState;
         }

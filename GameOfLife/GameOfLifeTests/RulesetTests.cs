@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using GameOfLife;
 using Moq;
 using NUnit.Framework;
@@ -11,15 +10,50 @@ namespace GameOfLifeTests
     public class RulesetTests : BaseTests
     {
         private Mock<IRule> _mockRule;
-        private IRule _rule;
+        private Mock<IRuleFactory> _mockRuleFactory;
         private Ruleset _ruleset;
 
         [SetUp]
         public void SetUp()
         {
-            _mockRule = new Mock<IRule>();
-            _rule = _mockRule.Object;
-            _ruleset = new Ruleset();
+            _mockRule = Fixture.Freeze<Mock<IRule>>();
+            _mockRuleFactory = Fixture.Freeze<Mock<IRuleFactory>>();
+
+            _ruleset = Fixture.Create<Ruleset>();
+        }
+
+        [Test]
+        public void SetRuleFor_GivenRuleParameters_CreatesAndStoresNewRuleInRuleset()
+        {
+            var state = Fixture.Create<LifeState>();
+            var numbersYieldingLive = Fixture.Create<uint[]>();
+            _mockRuleFactory.Setup(r => r.CreateRule(numbersYieldingLive)).Returns(_mockRule.Object);
+
+            _ruleset.SetRuleFor(state, numbersYieldingLive);
+
+            _mockRuleFactory.Verify(r => r.CreateRule(numbersYieldingLive));
+            Assert.That(_ruleset.Rules[state], Is.EqualTo(_mockRule.Object));
+        }
+
+        [Test]
+        public void SetDefaultRules_CreatesAndStoresDefaultRules()
+        {
+            var survivalRule = SetUpMockRuleFor(DefaultSettings.SurvivalNumbers);
+            var reproductionRule = SetUpMockRuleFor(DefaultSettings.ReproductionNumbers);
+
+            _ruleset.SetDefaultRules();
+
+            Assert.That(_ruleset.Rules[LifeState.Alive], Is.EqualTo(survivalRule));
+            Assert.That(_ruleset.Rules[LifeState.Dead], Is.EqualTo(reproductionRule));
+        }
+
+        private IRule SetUpMockRuleFor(uint[] neighborCounts)
+        {
+            var mockRule = new Mock<IRule>();
+            _mockRuleFactory.Setup(
+                r => r.CreateRule(neighborCounts))
+                .Returns(mockRule.Object);
+            return mockRule.Object;
         }
 
         [Test]
@@ -34,7 +68,7 @@ namespace GameOfLifeTests
         public void IsComplete_WithRulesEstablishedForAllStates_ReturnsTrue()
         {
             foreach (LifeState state in Enum.GetValues(typeof(LifeState)))
-                _ruleset[state] = _rule;
+                _ruleset.SetRuleFor(state);
 
             var completeStatus = _ruleset.IsComplete();
 
@@ -44,22 +78,21 @@ namespace GameOfLifeTests
         [Test]
         public void SetNextState_SetsCellStateToResultOfRuleApplication()
         {
-            var initialState = Fixture.Create<LifeState>();
-            var cell = new Cell(initialState);
-            var neighbors = Fixture.CreateMany<Cell>().ToArray();
-            var expectedFinalState = Fixture.CreateUnequalToDefault<LifeState>();
-            SetUpMockRule(neighbors, expectedFinalState, initialState);
+            var cell = Fixture.Create<Cell>();
+            var neighbors = Fixture.CreateMany<Cell>();
+            var expectedFinalState = Fixture.Create<LifeState>();
+            SetUpMockRule(cell, neighbors, expectedFinalState);
 
-            _ruleset.SetNextState(cell, neighbors);
+            _ruleset.SetNextStateOfCellGivenNeighbors(cell, neighbors);
             var actualFinalState = GetNextState(cell);
 
             Assert.That(actualFinalState, Is.EqualTo(expectedFinalState));
         }
 
-        private void SetUpMockRule(IEnumerable<Cell> cells, LifeState expectedFinalState, LifeState initialState)
+        private void SetUpMockRule(Cell cell, IEnumerable<Cell> cells, LifeState expectedFinalState)
         {
+            _ruleset.SetRuleFor(cell.CurrentState);
             _mockRule.Setup(r => r.Apply(cells)).Returns(expectedFinalState);
-            _ruleset[initialState] = _rule;
         }
 
         private LifeState GetNextState(Cell cell)

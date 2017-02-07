@@ -6,10 +6,15 @@ namespace GameOfLifeConsole
     {
         static void Main(string[] args)
         {
-            var consoleWriter = new TextReaderWriter();
-            var game = new Game(new RuleFactory(), new GridFactory(), consoleWriter, new Ruleset());
-            var consoleController = new ConsoleInterface(consoleWriter, game, new TextCommandParser(), new CommandRunner());
-            consoleController.Start();
+            var consoleReaderWriter = new ConsoleReaderWriter();
+            var commandRunner = new CommandRunner(
+                new Ruleset(new RuleFactory()),
+                new GridFactory(),
+                new GameAdvancer(consoleReaderWriter),
+                new GridWriter(consoleReaderWriter));
+
+            var game = new ConsoleGame(consoleReaderWriter, new TextCommandParser(), commandRunner);
+            game.Start();
         }
     }
 }

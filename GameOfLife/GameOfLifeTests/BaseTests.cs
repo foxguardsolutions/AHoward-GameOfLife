@@ -1,17 +1,19 @@
 ﻿using NUnit.Framework;
 using Ploeh.AutoFixture;
+using Ploeh.AutoFixture.AutoMoq;
 
 namespace GameOfLifeTests
 {
     [TestFixture]
     public class BaseTests
     {
-        protected Fixture Fixture { get; private set; }
+        protected IFixture Fixture { get; private set; }
 
         [SetUp]
         public void FixtureSetUp()
         {
-            Fixture = new Fixture();
+            Fixture = new Fixture()
+                .Customize(new AutoMoqCustomization());
         }
     }
 }

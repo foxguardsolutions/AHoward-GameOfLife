@@ -2,6 +2,6 @@
 {
     public interface IRuleFactory
     {
-        IRule Create(params uint[] neighborCountsYieldingLive);
+        IRule CreateRule(params uint[] neighborCountsYieldingLive);
     }
 }

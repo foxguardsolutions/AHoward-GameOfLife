@@ -1,6 +1,5 @@
 ﻿using GameOfLife;
 using NUnit.Framework;
-using Ploeh.AutoFixture;
 
 namespace GameOfLifeTests
 {

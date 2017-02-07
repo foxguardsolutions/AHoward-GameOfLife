@@ -6,7 +6,7 @@ using Ploeh.AutoFixture;
 
 namespace GameOfLifeTests
 {
-    public class SquareTileGridIterationTests : BaseTests
+    public class SquareTileGridCellTests : BaseTests
     {
         protected Cell[][] Cells { get; private set; }
         protected SquareTileGrid Grid { get; private set; }
@@ -56,17 +56,28 @@ namespace GameOfLifeTests
         [Test]
         public void GetCurrentPattern_WithoutAnyCellChanges_ReturnsPatternMatchingSeedPattern()
         {
-            var expectedPattern = new LifeState[Cells.Length][];
-            for (int rowNumber = 0; rowNumber < Cells.Length; rowNumber++)
+            var expectedPattern = new List<LifeState>();
+            foreach (var row in Cells)
             {
-                expectedPattern[rowNumber] = new LifeState[Cells[rowNumber].Length];
-                for (int columnNumber = 0; columnNumber < Cells[rowNumber].Length; columnNumber++)
-                    expectedPattern[rowNumber][columnNumber] = Cells[rowNumber][columnNumber].CurrentState;
+                foreach (var cell in row)
+                    expectedPattern.Add(cell.CurrentState);
             }
 
             var pattern = Grid.GetCurrentPattern();
 
             Assert.That(pattern, Is.EqualTo(expectedPattern));
+        }
+
+        [Test]
+        public void GetDimensions_ReturnsDimensionsOfSeedCells()
+        {
+            var expectedNumberOfRows = (uint)Cells.Length;
+            var expectedNumberOfColumns = (uint)Cells[0].Length;
+            var expectedDimensions = new uint[] { expectedNumberOfRows, expectedNumberOfColumns };
+
+            var dimensions = Grid.GetDimensions();
+
+            Assert.That(dimensions, Is.EqualTo(expectedDimensions));
         }
     }
 }

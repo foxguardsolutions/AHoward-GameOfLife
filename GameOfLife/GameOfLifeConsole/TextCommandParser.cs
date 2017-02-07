@@ -1,8 +1,10 @@
-﻿namespace GameOfLifeConsole
+﻿using GameOfLife;
+
+namespace GameOfLifeConsole
 {
     public class TextCommandParser
     {
-        public virtual Command ParseCommand()
+        public Command ParseCommand()
         {
             return ParseCommand("d");
         }

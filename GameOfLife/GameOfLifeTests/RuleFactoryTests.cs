@@ -12,7 +12,7 @@ namespace GameOfLifeTests
         {
             var ruleFactory = new RuleFactory();
             var numbers = Fixture.CreateMany<uint>().ToArray();
-            var rule = ruleFactory.Create(numbers);
+            var rule = ruleFactory.CreateRule(numbers);
             Assert.That(rule, Is.TypeOf(typeof(Rule)));
         }
     }

@@ -17,24 +17,22 @@ namespace GameOfLife
             _columnDimension = new Dimension((uint)cells[0].Length, wrapsOnColumns);
         }
 
-        public IEnumerable<IEnumerable<LifeState>> GetCurrentPattern()
+        public IEnumerable<LifeState> GetCurrentPattern()
         {
-            var pattern = new LifeState[_cells.Length][];
-            for (uint rowNumber = 0; rowNumber < _cells.Length; rowNumber++)
-            {
-                var row = GetRowPattern(rowNumber);
-                yield return row;
-            }
-        }
-
-        private IEnumerable<LifeState> GetRowPattern(uint rowNumber)
-        {
-            var cellsInRow = _cells[rowNumber].Length;
-            var pattern = new LifeState[cellsInRow];
-            for (uint columnNumber = 0; columnNumber < cellsInRow; columnNumber++)
-                pattern[columnNumber] = GetCellAt(new CellPosition(rowNumber, columnNumber)).CurrentState;
+            var pattern = new List<LifeState>();
+            foreach (var position in this)
+                pattern.Add(GetCellAt(position).CurrentState);
 
             return pattern;
+        }
+
+        public IEnumerable<uint> GetDimensions()
+        {
+            var numberOfRows = _rowDimension.Max - _rowDimension.Min + 1;
+            yield return numberOfRows;
+
+            var numberOfColumns = _columnDimension.Max - _columnDimension.Min + 1;
+            yield return numberOfColumns;
         }
 
         public Cell GetCellAt(CellPosition cellPosition)

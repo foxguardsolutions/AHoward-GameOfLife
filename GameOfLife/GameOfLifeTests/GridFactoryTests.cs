@@ -44,6 +44,14 @@ namespace GameOfLifeTests
             AssertGridCellsHaveInitialStateMatchingSeedValues(grid, _seed);
         }
 
+        [Test]
+        public void CreateDefaultGrid_ReturnsGridWithCellsThatHaveInitialStateMatchingDefaultSeedValues()
+        {
+            var grid = _gridFactory.CreateDefaultGrid();
+
+            AssertGridCellsHaveInitialStateMatchingSeedValues(grid, DefaultSettings.Seed);
+        }
+
         private void AssertGridCellsHaveInitialStateMatchingSeedValues(SquareTileGrid grid, LifeState[,] seed)
         {
             foreach (var position in grid)

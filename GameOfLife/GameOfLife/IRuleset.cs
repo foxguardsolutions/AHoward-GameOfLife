@@ -4,9 +4,9 @@ namespace GameOfLife
 {
     public interface IRuleset
     {
-        IRule this[LifeState state] { set; }
-
+        void SetRuleFor(LifeState state, params uint[] numbersYieldingLive);
+        void SetDefaultRules();
         bool IsComplete();
-        void SetNextState(Cell cell, IEnumerable<Cell> neighbors);
+        void SetNextStateOfCellGivenNeighbors(Cell cell, IEnumerable<Cell> neighbors);
     }
 }

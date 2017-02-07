@@ -1,10 +1,9 @@
-﻿using System.IO;
+﻿using GameOfLife;
 
-namespace GameOfLife
+namespace GameOfLifeConsole
 {
     public interface IConsoleReaderWriter : IConsoleWriter
     {
-        TextReader In { get; set; }
         string ReadLine();
     }
 }
