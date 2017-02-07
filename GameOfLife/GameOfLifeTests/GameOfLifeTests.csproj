@@ -81,7 +81,7 @@
     <Compile Include="ConsoleGameTests.cs" />
     <Compile Include="TextCommandParserTests.cs" />
     <Compile Include="DimensionTests.cs" />
-    <Compile Include="GridWriterTests.cs" />
+    <Compile Include="SquareTileGridWriterTests.cs" />
     <Compile Include="EnumExtensionTests.cs" />
     <Compile Include="GameAdvancerChangesGridTests.cs" />
     <Compile Include="GameAdvancerTests.cs" />

@@ -5,11 +5,11 @@ using System.Text;
 
 namespace GameOfLife
 {
-    public class GridWriter : IGridWriter
+    public class SquareTileGridWriter : IGridWriter
     {
         public IConsoleWriter DefaultWriter { get; set; }
 
-        public GridWriter(IConsoleWriter defaultWriter)
+        public SquareTileGridWriter(IConsoleWriter defaultWriter)
         {
             DefaultWriter = defaultWriter;
         }

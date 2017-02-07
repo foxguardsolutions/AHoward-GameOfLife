@@ -5,16 +5,16 @@ using Ploeh.AutoFixture;
 
 namespace GameOfLifeTests
 {
-    public class GridWriterTests : BaseTests
+    public class SquareTileGridWriterTests : BaseTests
     {
         private Mock<IConsoleWriter> _mockConsole;
-        private GridWriter _gridWriter;
+        private SquareTileGridWriter _gridWriter;
 
         [SetUp]
         public void SetUp()
         {
             _mockConsole = Fixture.Freeze<Mock<IConsoleWriter>>();
-            _gridWriter = Fixture.Create<GridWriter>();
+            _gridWriter = Fixture.Create<SquareTileGridWriter>();
         }
 
         [Test]

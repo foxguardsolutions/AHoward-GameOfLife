@@ -48,7 +48,7 @@
     <Compile Include="CellPosition.cs" />
     <Compile Include="Command.cs" />
     <Compile Include="CommandRunner.cs" />
-    <Compile Include="GridWriter.cs" />
+    <Compile Include="SquareTileGridWriter.cs" />
     <Compile Include="GameAdvancer.cs" />
     <Compile Include="ICommandRunner.cs" />
     <Compile Include="IConsoleWriter.cs" />
