@@ -47,6 +47,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConsoleGameModule.cs" />
+    <Compile Include="DependencyInjectionContainerFactory.cs" />
     <Compile Include="IConsoleReaderWriter.cs" />
     <Compile Include="TextCommandParser.cs" />
     <Compile Include="ConsoleGame.cs" />
