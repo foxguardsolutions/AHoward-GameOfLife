@@ -1,5 +1,5 @@
-﻿using System;
-using GameOfLife;
+﻿using GameOfLife;
+using Moq;
 using NUnit.Framework;
 using Ploeh.AutoFixture;
 
@@ -15,7 +15,7 @@ namespace GameOfLifeTests
         [SetUp]
         public void SetUp()
         {
-            _seed = Fixture.Create<LifeState[,]>();
+            _seed = Fixture.Freeze<LifeState[,]>();
             _wrapsOnRows = Fixture.Create<bool>();
             _wrapsOnColumns = Fixture.Create<bool>();
             _gridFactory = new GridFactory();
@@ -38,22 +38,6 @@ namespace GameOfLifeTests
         }
 
         [Test]
-        public void CreateHexTileGrid_GivenNoWrappingRules_ReturnsNewHexTileGrid()
-        {
-            var grid = _gridFactory.CreateHexTileGrid(_seed);
-
-            Assert.That(grid, Is.TypeOf(typeof(ToroidFriendlyHexTileGrid)));
-        }
-
-        [Test]
-        public void CreateHexTileGrid_GivenWrappingRules_ReturnsNewHexTileGrid()
-        {
-            var grid = _gridFactory.CreateToroidFriendlyHexTileGrid(_seed, _wrapsOnRows, _wrapsOnColumns);
-
-            Assert.That(grid, Is.TypeOf(typeof(ToroidFriendlyHexTileGrid)));
-        }
-
-        [Test]
         public void CreateSquareTileGrid_ReturnsGridWithCellsThatHaveInitialStateMatchingSeedValues()
         {
             var grid = _gridFactory.CreateSquareTileGrid(_seed, _wrapsOnRows, _wrapsOnColumns);
@@ -64,58 +48,27 @@ namespace GameOfLifeTests
         [Test]
         public void CreateDefaultGrid_ReturnsGridWithCellsThatHaveInitialStateMatchingDefaultSeedValues()
         {
-            var grid = _gridFactory.CreateDefaultGrid();
+            var mockSettings = new Mock<ISettings>();
 
-            AssertGridCellsHaveInitialStateMatchingSeedValues(grid, DefaultSettings.Seed);
+            _gridFactory.CreateDefaultGrid(mockSettings.Object);
+
+            mockSettings.Verify(s => s.GetDefaultGrid(_gridFactory));
         }
 
         [Test]
-        public void CreateToroidFriendlyHexTileGrid_GivenSeedWithEvenNumberOfRows_ReturnsGridWithCellsThatHaveInitialStateMatchingSeedValues()
+        public void CreateHexTileGrid_GivenNoWrappingRules_ReturnsNewHexTileGrid()
         {
-            var seedWithEvenNumberOfRows = AddRowsOfCellsUntilNumberOfRowsIsEven(_seed, Fixture.Create<LifeState>());
-            var grid = _gridFactory.CreateToroidFriendlyHexTileGrid(seedWithEvenNumberOfRows, _wrapsOnRows, _wrapsOnColumns);
+            var grid = _gridFactory.CreateHexTileGrid(_seed);
 
-            AssertGridCellsHaveInitialStateMatchingSeedValues(grid, seedWithEvenNumberOfRows);
+            Assert.That(grid, Is.TypeOf(typeof(HexTileGrid)));
         }
 
         [Test]
-        public void CreateToroidFriendlyHexTileGrid_GivenSeedWithOddNumberOfRows_ReturnsGridWithCellsThatHaveInitialStateMatchingSeedValuesPlusAnExtraRowOfDeadCells()
+        public void CreateHexTileGrid_GivenWrappingRules_ReturnsNewHexTileGrid()
         {
-            var seedWithOddNumberOfRows = AddRowsOfCellsUntilNumberOfRowsIsOdd(_seed, Fixture.Create<LifeState>());
-            var grid = _gridFactory.CreateToroidFriendlyHexTileGrid(seedWithOddNumberOfRows, _wrapsOnRows, _wrapsOnColumns);
+            var grid = _gridFactory.CreateHexTileGrid(_seed, _wrapsOnRows, _wrapsOnColumns);
 
-            var modifiedSeed = AddRowsOfCellsUntilNumberOfRowsIsEven(_seed, LifeState.Dead);
-
-            AssertGridCellsHaveInitialStateMatchingSeedValues(grid, modifiedSeed);
-        }
-
-        private LifeState[,] AddRowsOfCellsUntilNumberOfRowsIsEven(LifeState[,] pattern, LifeState stateOfCellsInAddedRows)
-        {
-            var additionalRowsToCreate = pattern.GetLength(0) % 2;
-
-            return AddRowsOfDeadCells(pattern, additionalRowsToCreate, stateOfCellsInAddedRows);
-        }
-
-        private LifeState[,] AddRowsOfCellsUntilNumberOfRowsIsOdd(LifeState[,] pattern, LifeState stateOfCellsInAddedRows)
-        {
-            var additionalRowsToCreate = (pattern.GetLength(0) + 1) % 2;
-
-            return AddRowsOfDeadCells(pattern, additionalRowsToCreate, stateOfCellsInAddedRows);
-        }
-
-        private LifeState[,] AddRowsOfDeadCells(LifeState[,] pattern, int additionalRowsToCreate, LifeState stateOfCellsInAddedRows)
-        {
-            var rowsInPattern = pattern.GetLength(0);
-            var columnsInPattern = pattern.GetLength(1);
-            var newPattern = new LifeState[rowsInPattern + additionalRowsToCreate, columnsInPattern];
-
-            for (int row = 0; row < rowsInPattern; row++)
-            {
-                for (int column = 0; column < columnsInPattern; column++)
-                    newPattern[row, column] = pattern[row, column];
-            }
-
-            return newPattern;
+            Assert.That(grid, Is.TypeOf(typeof(HexTileGrid)));
         }
 
         private void AssertGridCellsHaveInitialStateMatchingSeedValues(IGrid grid, LifeState[,] seed)

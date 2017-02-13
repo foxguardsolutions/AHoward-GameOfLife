@@ -6,31 +6,21 @@ namespace GameOfLifeTests
 {
     public class DimensionTests : BaseTests
     {
-        private bool _wraps;
-        private uint _size;
-
-        [SetUp]
-        public void SetUp()
-        {
-            _wraps = Fixture.Create<bool>();
-            _size = Fixture.Create<uint>();
-        }
-
         [Test]
         public void IsOwnNeighbor_GivenDimensionSizeOfOne_ReturnsWrappingStatus()
         {
-            var dimension = new Dimension(1, _wraps);
+            var wraps = Fixture.Freeze<bool>();
+            var dimension = GivenDimensionOfSizeOne();
 
             var isOwnNeighbor = dimension.IsOwnNeighbor();
 
-            Assert.That(isOwnNeighbor, Is.EqualTo(_wraps));
+            Assert.That(isOwnNeighbor, Is.EqualTo(wraps));
         }
 
         [Test]
         public void IsOwnNeighbor_GivenDimensionSizeGreaterThanOne_ReturnsFalse()
         {
-            var sizeGreaterThanOne = 1 + _size;
-            var dimension = new Dimension(sizeGreaterThanOne, _wraps);
+            var dimension = GivenDimensionOfSizeGreaterThanOne();
 
             var isOwnNeighbor = dimension.IsOwnNeighbor();
 
@@ -40,9 +30,8 @@ namespace GameOfLifeTests
         [Test]
         public void GetNeighborValues_GivenValueGreaterThanMinAndLessThanMax_ReturnsValueAndValuesOnEitherSide()
         {
-            var sizeWithAtLeastOneValueBetweenMinAndMax = 1 + _size + 1;
-            var dimension = new Dimension(sizeWithAtLeastOneValueBetweenMinAndMax, _wraps);
-            var internalValue = Fixture.CreateInRange<uint>((int)dimension.Min + 1, (int)dimension.Max - 1);
+            var dimension = GivenDimensionWithAtLeastOneValueBetweenMinAndMax();
+            var internalValue = (uint)Fixture.CreateInRange((int)dimension.Min + 1, (int)dimension.Max - 1);
 
             var expectedNeighbors = new uint[] { internalValue - 1, internalValue, internalValue + 1 };
 
@@ -54,8 +43,7 @@ namespace GameOfLifeTests
         [Test]
         public void GetNeighborValuesOfMinValue_GivenWrapping_ReturnsMaxMinAndMinPlusOne()
         {
-            var wraps = true;
-            var dimension = new Dimension(_size, wraps);
+            var dimension = GivenDimensionWithWrapping();
             var expectedNeighbors = new uint[] { dimension.Min, dimension.Min + 1, dimension.Max };
 
             var neighbors = dimension.GetNeighborValues(dimension.Min);
@@ -66,8 +54,7 @@ namespace GameOfLifeTests
         [Test]
         public void GetNeighborValuesOfMinValue_GivenNoWrapping_ReturnsMinAndMinPlusOne()
         {
-            var wraps = false;
-            var dimension = new Dimension(_size, wraps);
+            var dimension = GivenDimensionWithoutWrapping();
             var expectedNeighbors = new uint[] { dimension.Min, dimension.Min + 1 };
 
             var neighbors = dimension.GetNeighborValues(dimension.Min);
@@ -78,8 +65,7 @@ namespace GameOfLifeTests
         [Test]
         public void GetNeighborValuesOfMaxValue_GivenWrapping_ReturnsMinMaxAndMaxMinusOne()
         {
-            var wraps = true;
-            var dimension = new Dimension(_size, wraps);
+            var dimension = GivenDimensionWithWrapping();
             var expectedNeighbors = new uint[] { dimension.Min, dimension.Max, dimension.Max - 1 };
 
             var neighbors = dimension.GetNeighborValues(dimension.Max);
@@ -90,8 +76,7 @@ namespace GameOfLifeTests
         [Test]
         public void GetNeighborValuesOfMaxValue_GivenNoWrapping_ReturnsMaxAndMaxMinusOne()
         {
-            var wraps = false;
-            var dimension = new Dimension(_size, wraps);
+            var dimension = GivenDimensionWithoutWrapping();
             var expectedNeighbors = new uint[] { dimension.Max, dimension.Max - 1 };
 
             var neighbors = dimension.GetNeighborValues(dimension.Max);
@@ -102,7 +87,7 @@ namespace GameOfLifeTests
         [Test]
         public void GetNeighborValues_GivenDimensionSizeOfOne_ReturnsOnlyValue()
         {
-            var dimension = new Dimension(1, _wraps);
+            var dimension = GivenDimensionOfSizeOne();
             var expectedNeighbors = new uint[] { dimension.Min };
 
             var neighbors = dimension.GetNeighborValues(dimension.Min);
@@ -113,13 +98,45 @@ namespace GameOfLifeTests
         [Test]
         public void GetNeighborValues_GivenValueOutsideDimensionRange_ReturnsNoValues()
         {
-            var dimension = new Dimension(_size, _wraps);
+            var dimension = Fixture.Create<Dimension>();
             var valueOutsideRange = dimension.Max + Fixture.Create<uint>();
             var expectedNeighbors = new uint[0];
 
             var neighbors = dimension.GetNeighborValues(valueOutsideRange);
 
             Assert.That(neighbors, Is.EquivalentTo(expectedNeighbors));
+        }
+
+        private Dimension GivenDimensionOfSizeOne()
+        {
+            Fixture.Register<uint>(() => 1);
+            return Fixture.Create<Dimension>();
+        }
+
+        private Dimension GivenDimensionOfSizeGreaterThanOne()
+        {
+            var sizeGreaterThanOne = 1 + Fixture.Create<uint>();
+            Fixture.Register(() => sizeGreaterThanOne);
+            return Fixture.Create<Dimension>();
+        }
+
+        private Dimension GivenDimensionWithAtLeastOneValueBetweenMinAndMax()
+        {
+            var sizeWithAtLeastOneValueBetweenMinAndMax = 1 + Fixture.Create<uint>() + 1;
+            Fixture.Register(() => sizeWithAtLeastOneValueBetweenMinAndMax);
+            return Fixture.Create<Dimension>();
+        }
+
+        private Dimension GivenDimensionWithWrapping()
+        {
+            Fixture.Register(() => true);
+            return Fixture.Create<Dimension>();
+        }
+
+        private Dimension GivenDimensionWithoutWrapping()
+        {
+            Fixture.Register(() => false);
+            return Fixture.Create<Dimension>();
         }
     }
 }

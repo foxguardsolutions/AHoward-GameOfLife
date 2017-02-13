@@ -1,4 +1,5 @@
-﻿using GameOfLife;
+﻿using System.Collections.Generic;
+using GameOfLife;
 using Moq;
 using NUnit.Framework;
 using Ploeh.AutoFixture;
@@ -28,12 +29,12 @@ namespace GameOfLifeTests
         public void Execute_GivenReloadCommand_CallsDefaultRuleAndGridMethods()
         {
             var mockGrid = Fixture.Create<Mock<SquareTileGrid>>();
-            _mockGridFactory.Setup(g => g.CreateDefaultGrid()).Returns(mockGrid.Object);
+            _mockGridFactory.Setup(g => g.CreateDefaultGrid(It.IsAny<ISettings>())).Returns(mockGrid.Object);
 
             _commandRunner.Execute(Command.Reload);
 
-            _mockRuleset.Verify(r => r.SetDefaultRules());
-            _mockGridFactory.Verify(g => g.CreateDefaultGrid());
+            _mockRuleset.Verify(r => r.SetDefaultRules(It.IsAny<ISettings>()));
+            _mockGridFactory.Verify(g => g.CreateDefaultGrid(It.IsAny<ISettings>()));
             Assert.That(_commandRunner.Grid, Is.EqualTo(mockGrid.Object));
         }
 
@@ -50,7 +51,7 @@ namespace GameOfLifeTests
         {
             _commandRunner.Execute(Command.Display);
 
-            _mockGridWriter.Verify(g => g.WriteCurrentStateOf(_commandRunner.Grid));
+            _mockGridWriter.Verify(g => g.WriteCurrentStateOf(_commandRunner.Grid, It.IsAny<Dictionary<LifeState, string>>()));
         }
 
         [Test]

@@ -20,10 +20,10 @@ namespace GameOfLife
             Rules[state] = newRule;
         }
 
-        public void SetDefaultRules()
+        public void SetDefaultRules(ISettings settings)
         {
-            SetRuleFor(LifeState.Alive, DefaultSettings.SurvivalNumbers);
-            SetRuleFor(LifeState.Dead, DefaultSettings.ReproductionNumbers);
+            SetRuleFor(LifeState.Alive, settings.SurvivalNumbers);
+            SetRuleFor(LifeState.Dead, settings.ReproductionNumbers);
         }
 
         public bool IsComplete()

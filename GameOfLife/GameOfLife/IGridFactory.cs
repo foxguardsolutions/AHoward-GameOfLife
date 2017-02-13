@@ -2,8 +2,10 @@
 {
     public interface IGridFactory
     {
-        SquareTileGrid CreateSquareTileGrid(LifeState[,] seed);
-        SquareTileGrid CreateSquareTileGrid(LifeState[,] seed, bool wrapsOnRows, bool wrapsOnColumns);
-        SquareTileGrid CreateDefaultGrid();
+        IGrid CreateSquareTileGrid(LifeState[,] seed);
+        IGrid CreateSquareTileGrid(LifeState[,] seed, bool wrapsOnRows, bool wrapsOnColumns);
+        IGrid CreateHexTileGrid(LifeState[,] seed);
+        IGrid CreateHexTileGrid(LifeState[,] seed, bool wrapsOnRows, bool wrapsOnColumns);
+        IGrid CreateDefaultGrid(ISettings settings);
     }
 }

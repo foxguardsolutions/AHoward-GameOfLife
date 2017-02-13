@@ -1,38 +1,35 @@
-﻿using System;
-
-namespace GameOfLife
+﻿namespace GameOfLife
 {
     public class GridFactory : IGridFactory
     {
-        public SquareTileGrid CreateSquareTileGrid(LifeState[,] seed)
+        public IGrid CreateSquareTileGrid(LifeState[,] seed)
         {
             return CreateSquareTileGrid(seed, false, false);
         }
 
-        public SquareTileGrid CreateSquareTileGrid(LifeState[,] seed, bool wrapsOnRows, bool wrapsOnColumns)
+        public IGrid CreateSquareTileGrid(LifeState[,] seed, bool wrapsOnRows, bool wrapsOnColumns)
         {
             var cells = InitializeCells(seed);
             return new SquareTileGrid(cells, wrapsOnRows, wrapsOnColumns);
         }
 
-        public SquareTileGrid CreateDefaultGrid()
+        public IGrid CreateHexTileGrid(LifeState[,] seed)
         {
-            var cells = InitializeCells(DefaultSettings.Seed);
-            return new SquareTileGrid(cells, true, true);
+            return CreateHexTileGrid(seed, false, false);
         }
 
-        public ToroidFriendlyHexTileGrid CreateHexTileGrid(LifeState[,] seed)
-        {
-            return CreateToroidFriendlyHexTileGrid(seed, false, false);
-        }
-
-        public ToroidFriendlyHexTileGrid CreateToroidFriendlyHexTileGrid(LifeState[,] seed, bool wrapsOnRows, bool wrapsOnColumns)
+        public IGrid CreateHexTileGrid(LifeState[,] seed, bool wrapsOnRows, bool wrapsOnColumns)
         {
             var cells = InitializeCells(seed);
-            return new ToroidFriendlyHexTileGrid(cells, wrapsOnRows, wrapsOnColumns);
+            return new HexTileGrid(cells, wrapsOnRows, wrapsOnColumns);
         }
 
-        private Cell[][] InitializeCells(LifeState[,] seed)
+        public IGrid CreateDefaultGrid(ISettings settings)
+        {
+            return settings.GetDefaultGrid(this);
+        }
+
+        private static Cell[][] InitializeCells(LifeState[,] seed)
         {
             var cells = new Cell[seed.GetLength(0)][];
             for (uint rowNumber = 0; rowNumber < seed.GetLength(0); rowNumber++)

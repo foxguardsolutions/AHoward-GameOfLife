@@ -84,6 +84,19 @@
     <Compile Include="CommandRunnerTests.cs" />
     <Compile Include="ConsoleGameTests.cs" />
     <Compile Include="DependencyInjectionContainerFactoryTests.cs" />
+    <Compile Include="GridGetNeighborsOfSingleCellTests.cs" />
+    <Compile Include="GridGetNeighborsOnSingleRowGridTests.cs" />
+    <Compile Include="GridWriterTests.cs" />
+    <Compile Include="HexTileGridCellTests.cs" />
+    <Compile Include="HexTileGridGetNeighborsOfSingleCellTests.cs" />
+    <Compile Include="HexTileGridGetNeighborsOfSingleColumnGridTests.cs" />
+    <Compile Include="HexTileGridGetNeighborsOnMultiRowMultiColumnGridTests.cs" />
+    <Compile Include="HexTileGridGetNeighborsOnSingleRowGridTests.cs" />
+    <Compile Include="HexTileGridWriterTests.cs" />
+    <Compile Include="OffsetDimensionTests.cs" />
+    <Compile Include="SquareTileGridCellTests.cs" />
+    <Compile Include="SquareTileGridGetNeighborsOnMultiRowMultiColumnGridTests.cs" />
+    <Compile Include="SettingsTests.cs" />
     <Compile Include="TextCommandParserTests.cs" />
     <Compile Include="DimensionTests.cs" />
     <Compile Include="SquareTileGridWriterTests.cs" />
@@ -92,15 +105,14 @@
     <Compile Include="GameAdvancerTests.cs" />
     <Compile Include="GameAdvancerWritesToConsoleTests.cs" />
     <Compile Include="GridFactoryTests.cs" />
-    <Compile Include="MockObjects.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RuleFactoryTests.cs" />
     <Compile Include="RulesetTests.cs" />
     <Compile Include="RuleTests.cs" />
     <Compile Include="SquareTileGridGetNeighborsOfSingleCellTests.cs" />
-    <Compile Include="SquareTileGridGetNeighborsOnMultiRowMultiColumnGridTests.cs" />
+    <Compile Include="GridGetNeighborsOnMultiRowMultiColumnGridTests.cs" />
     <Compile Include="SquareTileGridGetNeighborsOnSingleRowGridTests.cs" />
-    <Compile Include="SquareTileGridCellTests.cs" />
+    <Compile Include="GridCellTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

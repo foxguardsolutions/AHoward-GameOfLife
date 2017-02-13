@@ -52,54 +52,76 @@ namespace GameOfLifeTests
             yield break;
         }
 
-        /* TODO: Decide which of these next two tests to keep */
-
-        // Testing method call order by using Moq's Callback method and temporary variables
-        [Test]
-        public void Step_CalculatesNextStateOfAllCellsBeforeAdvancingAnyCellStates()
-        {
-            var numberOfTimesNextCellStateHasBeenCalculated = 0;
-            MockRuleset.Setup(
-                r => r.SetNextStateOfCellGivenNeighbors(It.IsAny<Cell>(), It.IsAny<IEnumerable<Cell>>()))
-                .Callback(() => numberOfTimesNextCellStateHasBeenCalculated++);
-            GivenRulesetWithCompletionStatus(true);
-
-            var numberOfCalculationsMadeBeforeEachCellStateWasAdvanced = new List<int>();
-
-            var mockCell = Fixture.Create<Mock<Cell>>();
-            mockCell.Setup(
-                c => c.AdvanceState())
-                .Callback(() => numberOfCalculationsMadeBeforeEachCellStateWasAdvanced.Add(numberOfTimesNextCellStateHasBeenCalculated));
-
-            SetUpMockGridContaining(mockCell.Object);
-            var totalCellCount = _mockGrid.Object.Count();
-
-            Advancer.Step(_mockGrid.Object, MockRuleset.Object);
-
-            Assert.That(numberOfCalculationsMadeBeforeEachCellStateWasAdvanced, Is.All.EqualTo(totalCellCount));
-        }
-
-        private void SetUpMockGridContaining(Cell cell)
-        {
-            _mockGrid.Setup(g => g.GetCellAt(It.IsAny<CellPosition>()))
-                .Returns(cell);
-            _mockGrid.Setup(g => g.GetEnumerator())
-                .Returns(() => Fixture.CreateMany<CellPosition>().GetEnumerator());
-            _mockGrid.Setup(g => g.GetNeighborsOfCellAt(It.IsAny<CellPosition>()))
-                .Returns(Fixture.CreateMany<Cell>());
-        }
-
-        // Testing using a configuration that will fail if methods are called in the wrong order
         [Test]
         public void Step_CalculatesNextStateOfAllCellsBeforeAdvancingAnyCellStates_UsingPremadeConfigurationThatWouldFail()
         {
-            var grid = MockObjects.GridWithAllDeadCellsExceptTwoLiveCellsNeighboringEachOther;
-            var rules = MockObjects.RulesThatLeaveAllCellsDeadExceptIsolatedLiveCells;
+            var grid = GridWithAllDeadCellsExceptTwoLiveCellsNeighboringEachOther;
+            var rules = RulesThatLeaveAllCellsDeadExceptIsolatedLiveCells;
 
             Advancer.Step(grid, rules);
             var finalPattern = grid.GetCurrentPattern();
 
-            Assert.That(finalPattern, Is.EqualTo(MockObjects.PatternWithAllDeadCells));
+            Assert.That(finalPattern, Is.EqualTo(PatternWithAllDeadCells));
+        }
+
+        private IRuleset RulesThatLeaveAllCellsDeadExceptIsolatedLiveCells
+        {
+            get
+            {
+                var rules = new Ruleset(new RuleFactory());
+                rules.SetRuleFor(LifeState.Alive, 0);
+                rules.SetRuleFor(LifeState.Dead);
+                return rules;
+            }
+        }
+
+        private IGrid GridWithAllDeadCellsExceptTwoLiveCellsNeighboringEachOther
+        {
+            get
+            {
+                var grid = new SquareTileGrid(MakeDeadCells(3, 4), false, false);
+                foreach (var position in TwoPositionsNeighboringEachOther())
+                    SetToAlive(grid.GetCellAt(position));
+
+                return grid;
+            }
+        }
+
+        private IEnumerable<CellPosition> TwoPositionsNeighboringEachOther()
+        {
+            yield return new CellPosition(1, 1);
+            yield return new CellPosition(1, 2);
+        }
+
+        private IEnumerable<LifeState> PatternWithAllDeadCells
+        {
+            get { return GridWithAllDeadCells.GetCurrentPattern(); }
+        }
+
+        private IGrid GridWithAllDeadCells
+        {
+            get { return new SquareTileGrid(MakeDeadCells(3, 4), false, false); }
+        }
+
+        private void SetToAlive(Cell cell)
+        {
+            cell.SetNextState(LifeState.Alive);
+            cell.AdvanceState();
+        }
+
+        private Cell[][] MakeDeadCells(uint numberOfRows, uint numberOfColumns)
+        {
+            var cells = new Cell[numberOfRows][];
+            for (int row = 0; row < numberOfRows; row++)
+                cells[row] = MakeDeadCells(numberOfColumns).ToArray();
+
+            return cells;
+        }
+
+        private IEnumerable<Cell> MakeDeadCells(uint numberOfCells)
+        {
+            for (int numberAlreadyMade = 0; numberAlreadyMade < numberOfCells; numberAlreadyMade++)
+                yield return new Cell(LifeState.Dead);
         }
     }
 }

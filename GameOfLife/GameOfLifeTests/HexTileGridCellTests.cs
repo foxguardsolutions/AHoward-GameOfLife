@@ -4,12 +4,12 @@ using Ploeh.AutoFixture;
 
 namespace GameOfLifeTests
 {
-    public class SquareTileGridCellTests : GridCellTests
+    public class HexTileGridCellTests : GridCellTests
     {
         [SetUp]
         public void SetUpGrid()
         {
-            Grid = new SquareTileGrid(Cells, Fixture.Create<bool>(), Fixture.Create<bool>());
+            Grid = new HexTileGrid(Cells, Fixture.Create<bool>(), Fixture.Create<bool>());
         }
     }
 }

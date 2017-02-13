@@ -38,13 +38,22 @@ namespace GameOfLifeTests
         [Test]
         public void SetDefaultRules_CreatesAndStoresDefaultRules()
         {
-            var survivalRule = SetUpMockRuleFor(DefaultSettings.SurvivalNumbers);
-            var reproductionRule = SetUpMockRuleFor(DefaultSettings.ReproductionNumbers);
+            var settings = ConfigureMockSettings();
+            var survivalRule = SetUpMockRuleFor(settings.SurvivalNumbers);
+            var reproductionRule = SetUpMockRuleFor(settings.ReproductionNumbers);
 
-            _ruleset.SetDefaultRules();
+            _ruleset.SetDefaultRules(settings);
 
             Assert.That(_ruleset.Rules[LifeState.Alive], Is.EqualTo(survivalRule));
             Assert.That(_ruleset.Rules[LifeState.Dead], Is.EqualTo(reproductionRule));
+        }
+
+        private ISettings ConfigureMockSettings()
+        {
+            var mockSettings = new Mock<ISettings>();
+            mockSettings.Setup(s => s.SurvivalNumbers).Returns(Fixture.Create<uint[]>());
+            mockSettings.Setup(s => s.ReproductionNumbers).Returns(Fixture.Create<uint[]>());
+            return mockSettings.Object;
         }
 
         private IRule SetUpMockRuleFor(uint[] neighborCounts)

@@ -23,29 +23,20 @@ namespace GameOfLifeTests
             return array;
         }
 
-        public static T CreateInRange<T>(this IFixture fixture, int lowerLimit, int upperLimit)
+        public static long CreateInRange(this IFixture fixture, int lowerLimit, int upperLimit)
         {
+            if (lowerLimit == upperLimit)
+                return lowerLimit;
+
             fixture.Customizations.Add(new RandomNumericSequenceGenerator(lowerLimit, upperLimit));
-            var value = fixture.Create<T>();
+            var value = fixture.Create<long>();
             fixture.Customizations.RemoveAt(fixture.Customizations.Count - 1);
             return value;
         }
 
-        public static T CreateUnequalToDefault<T>(this IFixture fixture)
-        {
-            var excludeItem = default(T);
-            T newItem;
-
-            do
-                newItem = fixture.Create<T>();
-            while (newItem.Equals(excludeItem));
-
-            return newItem;
-        }
-
         public static T PickFromValues<T>(this IFixture fixture, params T[] collection)
         {
-            var elementIndex = fixture.CreateInRange<int>(0, collection.Length - 1);
+            var elementIndex = fixture.CreateInRange(0, collection.Length - 1);
             return collection[elementIndex];
         }
     }

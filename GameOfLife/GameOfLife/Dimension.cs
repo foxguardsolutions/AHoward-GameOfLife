@@ -4,7 +4,7 @@ namespace GameOfLife
 {
     public class Dimension
     {
-        private bool _wraps;
+        protected bool Wraps { get; private set; }
         public uint Min { get; private set; }
         public uint Max { get; private set; }
 
@@ -12,7 +12,7 @@ namespace GameOfLife
         {
             Min = 0;
             Max = size - 1;
-            _wraps = wraps;
+            Wraps = wraps;
         }
 
         public IEnumerable<uint> GetNeighborValues(uint currentValue)
@@ -31,7 +31,7 @@ namespace GameOfLife
             return GetNeighborsOfNonEdgeValue(currentValue);
         }
 
-        private IEnumerable<uint> GetNeighborsOfOnlyValue()
+        protected IEnumerable<uint> GetNeighborsOfOnlyValue()
         {
             yield return Min;
         }
@@ -40,7 +40,7 @@ namespace GameOfLife
         {
             yield return Min;
             yield return Min + 1;
-            if (_wraps)
+            if (Wraps)
                 yield return Max;
         }
 
@@ -48,13 +48,13 @@ namespace GameOfLife
         {
             yield return Max - 1;
             yield return Max;
-            if (_wraps)
+            if (Wraps)
                 yield return Min;
         }
 
         private IEnumerable<uint> GetNeighborsOfNonEdgeValue(uint currentValue)
         {
-            if (currentValue > Min && currentValue < Max)
+            if (IsInRange(currentValue))
             {
                 yield return currentValue - 1;
                 yield return currentValue;
@@ -62,9 +62,14 @@ namespace GameOfLife
             }
         }
 
+        protected bool IsInRange(uint value)
+        {
+            return value >= Min && value <= Max;
+        }
+
         public bool IsOwnNeighbor()
         {
-            return Max == Min && _wraps;
+            return Max == Min && Wraps;
         }
     }
 }

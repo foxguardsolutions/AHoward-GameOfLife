@@ -48,6 +48,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConsoleGameModule.cs" />
+    <Compile Include="HexTileB2S34ConsoleGameModule.cs" />
+    <Compile Include="HexTileB2S35ConsoleGameModule.cs" />
+    <Compile Include="SquareTileConsoleGameModule.cs" />
     <Compile Include="DependencyInjectionContainerFactory.cs" />
     <Compile Include="IConsoleReaderWriter.cs" />
     <Compile Include="TextCommandParser.cs" />
