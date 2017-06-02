@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameOfLife", "GameOfLife\Ga
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameOfLife.Console", "GameOfLife.Console\GameOfLife.Console.csproj", "{D7328028-6C67-4049-9021-4BAAFE6F85EC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameOfLife.Tests", "GameOfLife.Tests\GameOfLife.Tests.csproj", "{A9988A28-24B4-42DD-937C-F0AAA58FAE38}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{D7328028-6C67-4049-9021-4BAAFE6F85EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D7328028-6C67-4049-9021-4BAAFE6F85EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D7328028-6C67-4049-9021-4BAAFE6F85EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9988A28-24B4-42DD-937C-F0AAA58FAE38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9988A28-24B4-42DD-937C-F0AAA58FAE38}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9988A28-24B4-42DD-937C-F0AAA58FAE38}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9988A28-24B4-42DD-937C-F0AAA58FAE38}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
