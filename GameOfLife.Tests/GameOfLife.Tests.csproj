@@ -58,7 +58,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CellTests.cs" />
+    <Compile Include="GridFactoryTests.cs" />
+    <Compile Include="GridTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tests.cs" />
+    <Compile Include="TestsUsingCell.cs" />
+    <Compile Include="TestsUsingGrid.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -72,6 +78,9 @@
       <Project>{d0d22a6f-a5fb-415b-a741-5a0d7f4df95a}</Project>
       <Name>GameOfLife</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
