@@ -53,6 +53,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Cell.cs" />
+    <Compile Include="Environments\CellEnvironment.cs" />
+    <Compile Include="Environments\CellEnvironmentFactory.cs" />
+    <Compile Include="Environments\EdgedEnvironment.cs" />
     <Compile Include="Grid.cs" />
     <Compile Include="GridFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
