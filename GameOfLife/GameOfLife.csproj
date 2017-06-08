@@ -60,7 +60,12 @@
     <Compile Include="Environments\EdgedEnvironment.cs" />
     <Compile Include="Grid.cs" />
     <Compile Include="GridFactory.cs" />
+    <Compile Include="Operations\BringToLifeCommand.cs" />
     <Compile Include="Operations\CellOperation.cs" />
+    <Compile Include="Operations\CommandFactory.cs" />
+    <Compile Include="Operations\ICommand.cs" />
+    <Compile Include="Operations\KillCommand.cs" />
+    <Compile Include="Operations\NoActionCommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
