@@ -69,7 +69,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ArgumentParser\ArgumentParserFactory.cs" />
+    <Compile Include="ArgumentParser\CommandLineArgumentParser.cs" />
+    <Compile Include="ArgumentParser\IArgumentParser.cs" />
+    <Compile Include="GameLoader.cs" />
     <Compile Include="GameOfLife.cs" />
+    <Compile Include="InputReader\ConsoleReader.cs" />
+    <Compile Include="InputReader\FileReader.cs" />
+    <Compile Include="InputReader\IInputReader.cs" />
+    <Compile Include="InputReader\InputReaderFactory.cs" />
+    <Compile Include="OutputWriter\ConsoleWriter.cs" />
+    <Compile Include="OutputWriter\IOutputWriter.cs" />
+    <Compile Include="OutputWriter\OutputWriterFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -94,5 +105,6 @@
       <Name>GameOfLife</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

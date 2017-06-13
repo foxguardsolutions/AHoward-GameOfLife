@@ -59,6 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CellTests.cs" />
+    <Compile Include="Console\ArgumentParser\CommandLineArgumentParserTests.cs" />
     <Compile Include="EnvionmentRules\GameOfLifeRulesTests.cs" />
     <Compile Include="Environments\CellEnvironmentFactoryTests.cs" />
     <Compile Include="Environments\EdgedEnvironmentTests.cs" />
