@@ -58,6 +58,7 @@
     <Compile Include="Environments\CellEnvironment.cs" />
     <Compile Include="Environments\CellEnvironmentFactory.cs" />
     <Compile Include="Environments\EdgedEnvironment.cs" />
+    <Compile Include="Environments\WrappedEnvironment.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Grid.cs" />
     <Compile Include="GridFactory.cs" />

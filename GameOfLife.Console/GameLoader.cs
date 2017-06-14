@@ -22,7 +22,7 @@ namespace GameOfLife.Console
             var generationNumber = GetStartingGenerationNumber(gameLines[0]);
             var gridString = string.Join(GridFactory.NewLine, gameLines.Skip(1));
             var grid = GridFactory.Parse(gridString);
-            var factory = new CellEnvironmentFactory();
+            var factory = new CellEnvironmentFactory(wrapEdges);
             return new Game(generationNumber, grid, rules, factory);
         }
 

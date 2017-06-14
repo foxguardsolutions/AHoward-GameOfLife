@@ -64,6 +64,7 @@
     <Compile Include="Environments\CellEnvironmentFactoryTests.cs" />
     <Compile Include="Environments\EdgedEnvironmentTests.cs" />
     <Compile Include="Environments\TestsUsingEnvironments.cs" />
+    <Compile Include="Environments\WrappedEnvironmentTests.cs" />
     <Compile Include="GameTests.cs" />
     <Compile Include="GridFactoryTests.cs" />
     <Compile Include="GridTests.cs" />

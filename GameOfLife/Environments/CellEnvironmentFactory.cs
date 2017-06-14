@@ -4,9 +4,23 @@ namespace GameOfLife.Environments
 {
     public class CellEnvironmentFactory
     {
+        private readonly bool _wrap;
+
+        public CellEnvironmentFactory(bool wrap)
+        {
+            _wrap = wrap;
+        }
+
         public CellEnvironment GetEnvironment(int row, int column, Grid grid)
         {
-            return new EdgedEnvironment(row, column, grid);
+            CellEnvironment environment;
+
+            if (_wrap)
+                environment = new WrappedEnvironment(row, column, grid);
+            else
+                environment = new EdgedEnvironment(row, column, grid);
+
+            return environment;
         }
 
         public IEnumerable<CellEnvironment> GetEnvironments(Grid grid)
